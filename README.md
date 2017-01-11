@@ -1,2 +1,2 @@
 # cis322
-CIS 322 term project development
+Winter 2017 CIS 322 term project public development repository.
