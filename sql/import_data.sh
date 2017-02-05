@@ -14,7 +14,10 @@ curl -o osnap_legacy.tar.gz 'https://classes.cs.uoregon.edu//17W/cis322/files/os
 
 # extract the legacy files
 gzip -d osnap_legacy.tar.gz
-tar xvf osnap_legacy.tar
+tar -xvf osnap_legacy.tar
+
+# create necessary database tables
+./create_tables.sh $DB_NAME
 
 # ---- IMPORT ASSET DATA ---- 
 
