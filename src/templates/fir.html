@@ -12,6 +12,7 @@
         <table align="center">
             <tr><th>
                 <h2>Facility Inventory Report</h2>
+                <p>(connected to {{dbhost}} at port {{dbport}} for database "{{dbname}}")</p>
             </tr></th>
             <tr><th>
                 <form action="{{url_for('fir')}}" method="POST">
@@ -32,7 +33,7 @@
                     <tr>
                         <td id="tcell">common_name</td>
                         <td id="tcell">asset_tag</td>
-                        <td id="tcell">description</td>
+                        <td id="tcell">desc</td>
                         <td id="tcell">arrive_dt</td>
                         <td id="tcell">depart_dt</td>
                     </tr>

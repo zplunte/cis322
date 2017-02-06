@@ -12,6 +12,7 @@
         <table align="center">
             <tr><th>
                 <h2>In-Transit Report</h2>
+                <p>(connected to {{dbhost}} at {{dbport}} for database "{{dbname}}")</p>
             </tr></th>
             <tr><th>
                 <form action="{{url_for('logout')}}" method="POST">
@@ -40,9 +41,10 @@
                         <th id="thead">Departure Date</th>
                         <th id="thead">Arrival Facility</th>
                         <th id="thead">Arrival Date</th>
-                    </tr><tr>
+                    </tr>
+                    <tr>
                         <td id="tcell">asset_tag</td>
-                        <td id="tcell">description</td>
+                        <td id="tcell">desc</td>
                         <td id="tcell">src</td>
                         <td id="tcell">depart_dt</td>
                         <td id="tcell">dest</td>
