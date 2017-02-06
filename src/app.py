@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from config import dbname, dbhost, dbport
 
+# NOTE: Couldn't quite figure out how to include database info...
+
 app = Flask(__name__)
 
 @app.route('/index')
