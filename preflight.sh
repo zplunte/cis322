@@ -8,5 +8,5 @@ DATABASE=$1
 # Import LOST data into database
 ./sql/import_data.sh $DATABASE 5432
 
-# Copy source files into wsgi
+# Copy source files into wsgi (will overwrite any existing index.html)
 cp -R ./src/* $HOME/wsgi
