@@ -2,6 +2,14 @@ from flask import Flask, render_template, request
 from config import dbname, dbhost, dbport
 
 # NOTE: Couldn't quite figure out how to include database info...
+# I know I need to do something with the psql database in fir()
+# and itr() below, but I can't quite figure out what. Somehow I 
+# need to get the user input, call a psql query based on that 
+# input, and then feed the results of the query in the HTML 
+# tables. Just not sure how to do it yet and I've run out of time.
+# I think I was able to provide a solid layout and screen flow though!
+# It would be nice to go over some of the procedures for integrating 
+# database data into pages during class sometime.
 
 app = Flask(__name__)
 
