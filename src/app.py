@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from config import dbname, dbhost, dbport
 
 app = Flask(__name__)
 
@@ -15,12 +16,12 @@ def rf():
 @app.route('/fir', methods=['POST', 'GET'])
 def fir():
     if request.method == 'POST':
-        return render_template('fir.html')
+        return render_template('fir.html', dbname=dbname, dbhost=dbhost, dbport=dbport)
 
 @app.route('/itr', methods=['POST', 'GET'])
 def itr():
     if request.method == 'POST':
-        return render_template('itr.html')
+        return render_template('itr.html', dbname=dbname, dbhost=dbhost, dbport=dbport)
 
 @app.route('/logout')
 def logout():
