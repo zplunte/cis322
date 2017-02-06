@@ -14,7 +14,7 @@
                 <h2>In-Transit Report</h2>
             </tr></th>
             <tr><th>
-                <form action="logout.html" method="POST">
+                <form action="{{url_for('logout')}}" method="POST">
                     <table align="center">
                         <tr><th style="text-align:right">
                             Departure Facility: <input type="text" name="departure_facility">
@@ -51,10 +51,10 @@
                 </table><br>
             </th></tr>
             <tr><th>
-                <form action="rf.html">
+                <form action="{{url_for('rf')}}", method="POST">
                     <input type="submit" value="Back">
                 </form><br>
-                <form action="logout.html">
+                <form action="{{url_for('logout')}}">
                     <input type="submit" value="Sign Out">
                 </form><br>
             </th></tr>
