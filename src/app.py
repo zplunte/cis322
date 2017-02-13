@@ -12,19 +12,13 @@ import json, datetime, time
 # It would be nice to go over some of the procedures for integrating 
 # database data into pages during class sometime.
 
-# NOTE ON MILESTONE 5: I'm getting the following message for my service
-# calls:
-# 
-#     Method Not Allowed
-#     The method is not allowed for the requested URL.
-#
-# I'm not quite sure what's going wrong, but I'm not very confident in 
-# my general understanding of this assignment... I was able to provide 
-# a good REST API Service Call usage page with the specs from the 
-# requirements document, but that's about it. It would be nice to go 
-# over the service call implementations in class, specifically how to 
-# implement them in our main python flask script (this file). I'm not 
-# sure how to send the request information to the service call.
+# NOTE ON MILESTONE 5: I was able to provide a good REST API Service 
+# Call usage page with the specs from the requirements document, but 
+# I'm not sure how to handle the requests for the service calls. It 
+# would be nice to go over the service call implementations in class
+# again briefly, specifically how to implement their handling in our 
+# main python flask script (this file). I'm not quite sure how to run
+# the plaintext tests provided in the instructor's git repo.
 
 app = Flask(__name__)
 
