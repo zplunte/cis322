@@ -1,6 +1,170 @@
 <!DOCTYPE html>
+<!-- "REST" API usage description page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- DANGER: DEMO VERSION! (some features may not yet function properly) -->
 <html>
     <body>
-    
+        <table align="center">
+            <tr><th>
+                <h2>REST API Service Calls</h2>
+            </th></tr>
+            <tr align="left"><th>
+                <h3>Lost Key<br>--------------------</h3>
+                <p>
+                    URI: 127.0.0.1:8080/rest/lost_key<br>
+                    Description: Returns the LOST public key<br><br>
+                    Request:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;The request does not provide values for any of the arguments<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;though the data and signatures fields must be present in the request<br><br>
+                    Response:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;result: 'OK' or 'FAIL'<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;key: The LOST public key<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"result": "OK",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"key": "bksaoudu......aoelchsauh"<br>
+                    }<br><br>
+                </p>
+            </th></tr>
+            <tr align="left"><th>
+                <h3>Activate User<br>--------------------</h3>
+                <p>
+                    URI: 127.0.0.1:8080/rest/activate_user<br>
+                    Description: Reactivates LOST access for a user or generates a new user account if needed<br><br>
+                    Request:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;username: OSNAP username to activate<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"username": "carter",<br>
+                    }<br><br>
+                    Response:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;result: 'OK', 'NEW', or 'FAIL'<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"result": "OK",<br>
+                    }<br><br>
+                </p>
+            </th></tr>
+            <tr align="left"><th>
+                <h3>Suspend User<br>--------------------</h3>
+                <p>
+                    URI: 127.0.0.1:8080/rest/suspend_user<br>
+                    Description: Revokes access for a user. If user does not exist or access has already been revoked, this call has no effect<br><br>
+                    Request:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;username: OSNAP username to revoke<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"username": "jackson",<br>
+                    }<br><br>
+                    Response:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;result: 'OK'<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"result": "OK",<br>
+                    }<br><br>
+                </p>
+            </th></tr>
+            <tr align="left"><th>
+                <h3>List Products<br>--------------------</h3>
+                <p>
+                    URI: 127.0.0.1:8080/rest/list_products<br>
+                    Description: Requests a listing of all products in LOST based on a filter criteria<br><br>
+                    Request:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;vendor: OSNAP Case insensitive string to match against vendor name<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;description: Case insensitive string to match against product description<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;compartments: Security tags for the asset as a json array<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"vendor": "",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"description": "notepad",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"compartments": []<br>
+                    }<br><br>
+                    Response:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;listing: A json list containing the product information entries<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"listing": [<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vendor": "Dunder Mifflin",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "LOST legal size notepad",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"compartments": []<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vendor": "big n large",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "LOST legal size notepad",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"compartments": []<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;]<br>
+                    }<br><br>
+                </p>
+            </th></tr>
+            <tr align="left"><th>
+                <h3>Add Products<br>--------------------</h3>
+                <p>
+                    URI: 127.0.0.1:8080/rest/add_products<br>
+                    Description: Adds products to LOST. Requests should be atomic<br><br>
+                    Request:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;new_products: A json list describing the new products<br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"new_products": [<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vendor": "Dunder Mifflin",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "LOST legal size notepad",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"alt_description": "Children's storybook",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"compartments": ["adm:s"]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"vendor": "Stark Industries",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "Micronized Arc Reactor",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"alt_description": "Baseball",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"compartments": ["nrg:ts","wpn:s"]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;]<br>
+                    }<br><br>
+                    Response:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;result: 'OK', 'FAIL'<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"result": "OK"<br>
+                    }<br><br>
+                </p>
+            </th></tr>
+            <tr align="left"><th>
+                <h3>Add Asset<br>--------------------</h3>
+                <p>
+                    URI: 127.0.0.1:8080/rest/add_asset<br>
+                    Description: Adds a new asset to LOST<br><br>
+                    Request:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;vendor: Vendor of the product<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;description: Description of the product<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;compartments: Additional compartments the asset should be classified under<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;facility: Facility code the asset is initially housed at<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"vendor": "Dunder Mifflin",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"description": "LOST letter size notepad",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"compartments": ["wpn:ts"],<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"facility": "HQ"<br><br>
+                    }<br><br>
+                    Response:<br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;result: 'OK', or 'FAIL'<br><br>
+                    Example:<br><br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"timestamp": "2017-02-02 06:15:13",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"result": "OK",<br>
+                    }<br><br>
+                </p>
+            </th></tr>
+        </table>
     </body>
 </html>
