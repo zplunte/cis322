@@ -24,24 +24,24 @@ tar -xvf osnap_legacy.tar
 # py script generates sql insert script for asset legacy data
 python3 gen_asset_inserts.py > tmp.sql
 
-# run sql script to insert asset legacy data into db, store output in temporary map file
-psql $DB_NAME -p $PORT_NUM -f tmp.sql > map.txt
+# run sql script to insert asset legacy data into db
+psql $DB_NAME -p $PORT_NUM -f tmp.sql
 
 # ---- IMPORT USER DATA ----
 
 # py script generates sql insert script for user legacy data
 python3 gen_user_inserts.py > tmp.sql
 
-# run sql script to insert user legacy data into db, store output in temporary map file
-psql $DB_NAME -p $PORT_NUM -f tmp.sql > map.txt
+# run sql script to insert user legacy data into db
+psql $DB_NAME -p $PORT_NUM -f tmp.sql
 
 # ---- IMPORT SECURITY DATA ----
 
 # py script generates sql insert script for security legacy data
 python3 gen_security_inserts.py > tmp.sql
 
-# run sql script to insert security legacy data into db, store output in temporary map file
-psql $DB_NAME -p $PORT_NUM -f tmp.sql > map.txt
+# run sql script to insert security legacy data into db
+psql $DB_NAME -p $PORT_NUM -f tmp.sql
 
 # clean up all temporary files
-rm tmp.sql map.txt
+rm tmp.sql
