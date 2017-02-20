@@ -1,14 +1,20 @@
-<!DOCTYPE html>
+CTYPE html>
 <!-- Login page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
     <body>
         <table align="center">
             <tr><th>
-                <h1> OSNAP LOST User Login </h1>
+                <h2>Create User</h2>
             </th></tr>
             <tr><th>
-                <form action="{{url_for('login')}}" method="POST">
+                <h3>
+                    Max username length: 16 characters<br>
+                    Max password length: 16 characters
+                </h3>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('create_user')}}" method="POST">
                     Username: <input type="text" name="username"><br><br>
                     Password: <input type="password" size="16" name="password"><br><br>
                     <input type="submit" value="Submit">
@@ -17,3 +23,4 @@
         </table>
     </body>
 </html>
+

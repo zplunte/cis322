@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- Dashboard page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
+<html>
+    <body>
+        <table align="center">
+            <tr><th>
+                <h2> Login Successful </h2>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('dashboard')}}" method="GET">
+                Currently logged in as: {{ username }}
+                </form>
+            </th></tr>
+        </table>
+    </body>
+</html>
