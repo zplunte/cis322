@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from config import dbname, dbhost, dbport
 import psycopg2 as psycop
 import json
