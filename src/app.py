@@ -13,8 +13,19 @@ connection = psycop.connect(database=dbname, host=dbhost, port=dbport)
 curs = connection.cursor()
 
 @app.route('/')
+@app.route('/login', methods=(['POST', 'GET']))
 def index():
-    return render_template('index.html')
+    if request.method == 'GET':
+        return render_template('index.html')
+    if request.method == 'POST':
+        if 'password' in request.form and 'username' in request.form:
+            uname = request.form['username']
+            if user_exists(uname):
+                passwd = request.form['password']
+                curs.execute("""select password from userdata where username='{}'""".format(uname))
+                if curs.fetchone() is not None:
+                    return render_template('dashboard.html')
+        return render_template('invalid_login.html')
 
 def user_exists(uname):
     curs.execute("""select username from userdata where username='{}'""".format(uname))
@@ -35,6 +46,13 @@ def create_user():
                 connection.commit()
                 return render_template('user_created.html')
         return render_template('create_user.html')
+
+@app.route('/dashboard', methods=(['GET']))
+def dashboard():
+    if 'username' in session:
+        return render_template('dashboard.html', username=session['username'])
+    else:
+        return None
 
 if __name__ == "__main__":
     app.run(host=dbhost, port=dbport)
