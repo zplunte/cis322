@@ -6,16 +6,12 @@
         <table align="center">
             <tr><th>
                 <h2>Add Facility</h2>
+                <h3>Current facilities:</h3>
+                ---- (nothing here yet) ----<br>
             </th></tr>
             <tr><th>
-                <h2>Current facilities:</h2><br>
-                -- nothing here yet --<br>
-            </th></tr>
-            <tr><th>
-                <h3>
                     Max common name length: 32 characters<br>
-                    Max code length: 6 characters
-                </h3>
+                    Max code length: 6 characters<br>
             </th></tr>
             <tr><th>
                 <form action="{{url_for('add_facility')}}" method="POST">
@@ -25,8 +21,9 @@
                 </form>
             </th></tr>
             <tr><th>
+                <br>
                 <form action="{{url_for('dashboard')}}">
-                    <input type="submit" value="Dashboard">
+                    <input type="submit" value="Back">
                 </form>
             </th></tr>
         </table>
