@@ -84,5 +84,27 @@ def add_facility():
                 return render_template('facility_created.html')
         return render_template('add_facility.html')
 
+def asset_exists(atag):
+    curs.execute("""select asset_tag from assets where asset_tag='{}'""".format(atag))
+    return (curs.fetchone() is not None)
+
+@app.route('/add_asset', methods=(['GET', 'POST']))
+def add_asset():
+    if request.method == 'GET':
+        return render_template('add_asset.html')
+    if request.method == 'POST':
+        if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_name' in request.form and 'asset_arrival_time' in request.form:
+            atag = request.form['asset_tag']
+            adesc = request.form['asset_description']
+            afname = request.form['asset_facility_name']
+            aarrival = request.form['asset_arrival_time']
+            if asset_exists(atag):
+                return render_template('asset_exists.html')
+            else:
+                curs.execute("""insert into assets (asset_tag, description) values ('{}', '{}')""".format(atag, adesc))
+                connection.commit()
+                return render_template('asset_created.html')
+        return render_template('add_asset.html')
+
 if __name__ == "__main__":
     app.run(host=dbhost, port=dbport)

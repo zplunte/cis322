@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- 'Add asset' page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
+<html>
+    <body>
+        <table align="center">
+            <tr><th>
+                <h2>Add Asset</h2>
+            </th></tr>
+            <tr><th>
+                <h2>Current assets:</h2><br>
+                -- nothing here yet --<br>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('add_asset')}}" method="POST">
+                    Asset tag: <input type="text" name="asset_tag"><br><br>
+                    Description: <input type="text" name="asset_description"><br><br>
+                    Facility: <select name="asset_facility_name">
+                        <option>facility 1</option>
+                        <option>facility 1</option>
+                        <option>facility 1</option>
+                        <option>facility 1</option>
+                        <option>facility 1</option>
+                    </select>
+                    Arrival time: <input type="text" name="asset_arrival_time"> 
+                    <input type="submit" value="Submit">
+                </form>
+            </th></tr>
+        </table>
+    </body>
+</html>
+
