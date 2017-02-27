@@ -64,12 +64,9 @@ def create_user():
                 return render_template('user_created.html')
         return render_template('create_user.html')
 
-@app.route('/dashboard', methods=(['GET']))
+@app.route('/dashboard', methods=(['GET', 'POST']))
 def dashboard():
-    if 'username' in session:
-        return render_template('dashboard.html', username=session['username'])
-    else:
-        return None
+    return render_template('dashboard.html')
 
 def facility_exists(fname, fcode):
     curs.execute("""select common_name from facilities where common_name='{}'""".format(fname))

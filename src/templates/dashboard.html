@@ -1,15 +1,38 @@
 <!DOCTYPE html>
-<!-- Dashboard page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- 'Dashboard' page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
     <body>
         <table align="center">
             <tr><th>
-                <h2> Login Successful </h2>
+                <h2> Dashboard </h2>
             </th></tr>
             <tr><th>
-                <form action="{{url_for('dashboard')}}" method="GET">
-                Currently logged in as: {{ username }}
+                <h3> Welcome! </h3>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('index')}}">
+                    <input type="submit" value="Login">
+                </form>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('add_facility')}}">
+                    <input type="submit" value="Add Facility">
+                </form>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('add_asset')}}">
+                    <input type="submit" value="Add Asset">
+                </form>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('dispose_asset')}}">
+                    <input type="submit" value="Dispose Asset">
+                </form>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('asset_report')}}">
+                    <input type="submit" value="Asset Report">
                 </form>
             </th></tr>
         </table>
