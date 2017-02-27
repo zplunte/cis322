@@ -49,6 +49,9 @@ def create_user():
             else:
                 urole = request.form['role']
                 upass = request.form['password']
+#                session['username'] = uname
+#                session['password'] = upass
+#                session['role'] = urole
                 curs.execute("""insert into userdata (username, password, role) values ('{}', '{}', '{}')""".format(uname, upass, urole))
                 connection.commit()
                 return render_template('user_created.html')
@@ -122,8 +125,8 @@ def asset_is_disposed(atag):
 
 @app.route('/dispose_asset', methods=(['GET', 'POST']))
 def dispose_asset():
-    if session['role'] != 'Logistics Manager':
-        return render_template('invalid_role_for_disposal.html')
+#    if session['role'] != 'Logistics Manager':
+#        return render_template('invalid_role_for_disposal.html')
     if request.method == 'GET':
         return render_template('dispose_asset.html')
     if request.method == 'POST':
@@ -138,6 +141,26 @@ def dispose_asset():
             else:
                 return render_template('asset_does_not_exist.html') 
         return render_template('dashboard.html')
+
+def report_date(repdate):
+    return render_template('asset_report.html')
+
+def report_date_and_fac(repdate, repfac):
+    return render_template('asset_report.html')
+
+@app.route('/asset_report', methods=(['GET', 'POST']))
+def asset_report():
+    if request.method == 'GET':
+        return render_template('asset_report.html')
+    if request.method == 'POST':
+        if 'report_date' in request.form:
+            repdate = request.form['report_date']
+            if 'report_facility' in request.form:
+                repfac = request.form['report_facility']
+                return report_date_and_fac(repdate, repfac)
+            else:
+                return report_date(repdate)
+        return render_template('asset_report.html')
 
 if __name__ == "__main__":
     app.run(host=dbhost, port=dbport)
