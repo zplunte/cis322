@@ -42,13 +42,14 @@ def create_user():
     if request.method == 'GET':
         return render_template('create_user.html')
     if request.method == 'POST':
-        if 'password' in request.form and 'username' in request.form:
+        if 'password' in request.form and 'username' in request.form and 'role' in request.form:
             uname = request.form['username']
             if user_exists(uname):
                 return render_template('user_exists.html')
             else:
+                role = request.form['role']
                 passwd = request.form['password']
-                curs.execute("""insert into userdata (username, password) values ('{}', '{}')""".format(uname, passwd))
+                curs.execute("""insert into userdata (username, password, role) values ('{}', '{}', '{}')""".format(uname, passwd, role))
                 connection.commit()
                 return render_template('user_created.html')
         return render_template('create_user.html')

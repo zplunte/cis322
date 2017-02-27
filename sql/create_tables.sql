@@ -4,12 +4,6 @@
 CREATE TABLE userdata (
     username varchar(16),
     password varchar(16),
-    role_fk int REFERENCES roles (role_pk)
-);
-
-/* Decided to create a new table specifically for roles */
-CREATE TABLE roles (
-    role_pk serial primary key,
     role varchar(256)
 );
 
