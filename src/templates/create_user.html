@@ -12,10 +12,12 @@
             <tr><th>
                 <table align="center">
                     <tr><th>
+                        Role: <input type="text" name="role"><br><br>
+                        Username: <input type="text" name="username"><br><br>
+                        Password: <input type="password" size="16" name="password"><br><br>
+                    </tr></th>
+                    <tr><th>
                         <form action="{{url_for('create_user')}}" method="POST">
-                            Role: <input type="text" name="role"><br><br>
-                            Username: <input type="text" name="username"><br><br>
-                            Password: <input type="password" size="16" name="password"><br><br>
                             <input type="submit" value="Submit">
                         </form>
                     </th><th>
