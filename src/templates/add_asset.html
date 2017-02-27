@@ -6,10 +6,8 @@
         <table align="center">
             <tr><th>
                 <h2>Add Asset</h2>
-            </th></tr>
-            <tr><th>
-                <h2>Current assets:</h2>
-                -- nothing here yet --<br><br>
+                <h3>Current assets:</h3>
+                ---- (nothing here yet) ----<br><br>
             </th></tr>
             <tr><th>
                 <form action="{{url_for('add_asset')}}" method="POST">
@@ -27,8 +25,9 @@
                 </form>
             </th></tr>
             <tr><th>
+                <br>
                 <form action="{{url_for('dashboard')}}">
-                    <input type="submit" value="Dashboard">
+                    <input type="submit" value="Back">
                 </form>
             </th></tr>
         </table>
