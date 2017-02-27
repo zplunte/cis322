@@ -6,21 +6,20 @@
         <table align="center">
             <tr><th>
                 <h2>Dispose Asset</h2>
-            </th></tr>
-            <tr><th>
-                <h2>Current assets:</h2>
-                -- nothing here yet --<br><br>
+                <h3>Current assets:</h3>
+                ---- (nothing here yet) ----<br><br>
             </th></tr>
             <tr><th>
                 <form action="{{url_for('dispose_asset')}}" method="POST">
                     Asset tag: <input type="text" name="disposal_asset_tag"><br><br>
-                    Disposal time: <input type="text" name="disposal_time"> 
+                    Disposal time: <input type="text" name="disposal_time"><br><br>
                     <input type="submit" value="Submit">
                 </form>
             </th></tr>
             <tr><th>
+                <br>
                 <form action="{{url_for('dashboard')}}">
-                    <input type="submit" value="Dashboard">
+                    <input type="submit" value="Back">
                 </form>
             </th></tr>
         </table>
