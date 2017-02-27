@@ -16,12 +16,12 @@ curs = connection.cursor()
 
 @app.route('/', methods=(['POST', 'GET']))
 def home():
-    return render_template('login.html')
+    return render_template('index.html')
 
-@app.route('/login', methods=(['POST', 'GET']))
+@app.route('/index', methods=(['POST', 'GET']))
 def index():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('index.html')
     if request.method == 'POST':
         if 'password' in request.form and 'username' in request.form:
             uname = request.form['username']
