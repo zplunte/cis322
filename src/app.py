@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, session
 from config import dbname, dbhost, dbport
 import psycopg2 as psycop
+import psycopg2.extras
+import sys
 import json
 
 app = Flask(__name__)
@@ -12,11 +14,14 @@ app.config['DB_HOST'] = dbhost
 connection = psycop.connect(database=dbname, host=dbhost, port=dbport)
 curs = connection.cursor()
 
-@app.route('/')
-@app.route('/index', methods=(['POST', 'GET']))
+@app.route('/', methods=(['POST', 'GET']))
+def home():
+    return render_template('login.html')
+
+@app.route('/login', methods=(['POST', 'GET']))
 def index():
     if request.method == 'GET':
-        return render_template('index.html')
+        return render_template('login.html')
     if request.method == 'POST':
         if 'password' in request.form and 'username' in request.form:
             uname = request.form['username']
@@ -24,8 +29,9 @@ def index():
                 passwd = request.form['password']
                 curs.execute("""select password from userdata where username='{}'""".format(uname))
                 if curs.fetchone() is not None:
-                    return render_template('dashboard.html')
+                    return dashboard()
         return render_template('invalid_login.html')
+    return render_template('invalid_login.html')
 
 def user_exists(uname):
     curs.execute("""select username from userdata where username='{}'""".format(uname))
