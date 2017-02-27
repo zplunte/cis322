@@ -5,6 +5,13 @@ import psycopg2.extras
 import sys
 import json
 
+# NOTE: I am still having trouble pulling up data from the databases.
+# It seems like the data is being stored correctly, but I haven't 
+# figured out how to pull it up and format it appropriately on the HTML
+# pages. I attempted to do everything, but I didn't quite get that part
+# in time. I will be finishing the functionality of this iteration in 
+# the next few days.
+
 app = Flask(__name__)
 
 app.config['DB_NAME'] = dbname
