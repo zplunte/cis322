@@ -13,7 +13,7 @@ connection = psycop.connect(database=dbname, host=dbhost, port=dbport)
 curs = connection.cursor()
 
 @app.route('/')
-@app.route('/login', methods=(['POST', 'GET']))
+@app.route('/index', methods=(['POST', 'GET']))
 def index():
     if request.method == 'GET':
         return render_template('index.html')
