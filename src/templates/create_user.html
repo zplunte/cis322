@@ -5,13 +5,9 @@
     <body>
         <table align="center">
             <tr><th>
-                <h2>Create User</h2>
-            </th></tr>
-            <tr><th>
-                <h3>
-                    Max username length: 16 characters<br>
-                    Max password length: 16 characters
-                </h3>
+                <h2>Create User</h2><br>
+                Max username length: 16 characters<br>
+                Max password length: 16 characters
             </th></tr>
             <tr><th>
                 <form action="{{url_for('create_user')}}" method="POST">
@@ -22,6 +18,7 @@
                 </form>
             </th></tr>
             <tr><th>
+                <br>
                 <form action="{{url_for('index')}}">
                     <input type="submit" value="Back">
                 </form>
