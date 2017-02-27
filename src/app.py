@@ -106,5 +106,38 @@ def add_asset():
                 return render_template('asset_created.html')
         return render_template('add_asset.html')
 
+def get_role(uname):
+    curs.execute("""select role from userdata where username='{}'""".format(uname))
+    role = curs.fetchone()
+    if role != None:
+        return role[0]
+    return None
+
+def asset_is_disposed(atag):
+    curs.execute("""select is_disposed from assets where asset_tag='{}'""".format(atag))
+    disposal_state = curs.fetchone()
+    if disposal_state != None:
+        return disposal_state[0]
+    return None
+
+@app.route('/dispose_asset', methods=(['GET', 'POST']))
+def dispose_asset():
+    if session['role'] != 'Logistics Manager':
+        return render_template('invalid_role_for_disposal.html')
+    if request.method == 'GET':
+        return render_template('dispose_asset.html')
+    if request.method == 'POST':
+        if 'disposal_asset_tag' in request.form and 'disposal_time' in request.form:
+            datag = request.form['disposal_asset_tag']
+            dtime = request.form['disposal_time']
+            if asset_exists(datag):
+                if (asset_is_disposed(datag)):
+                    return render_template('asset_already_disposed.html')
+                else:
+                    return render_template('asset_disposed.html')
+            else:
+                return render_template('asset_does_not_exist.html') 
+        return render_template('dashboard.html')
+
 if __name__ == "__main__":
     app.run(host=dbhost, port=dbport)
