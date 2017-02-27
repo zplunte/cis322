@@ -61,5 +61,28 @@ def dashboard():
     else:
         return None
 
+def facility_exists(fname, fcode):
+    curs.execute("""select common_name from facilities where common_name='{}'""".format(fname))
+    result = (curs.fetchone() is not None)
+    curs.execute("""select code from facilities where code='{}'""".format(fcode))
+    result = result or (curs.fetchone() is not None)
+    return result
+
+@app.route('/add_facility', methods=(['GET', 'POST']))
+def add_facility():
+    if request.method == 'GET':
+        return render_template('add_facility.html')
+    if request.method == 'POST':
+        if 'facility_common_name' in request.form and 'facility_code' in request.form:
+            fname = request.form['facility_common_name']
+            fcode = request.form['facility_code']
+            if facility_exists(fname, fcode):
+                return render_template('facility_exists.html')
+            else: 
+                curs.execute("""insert into facilities (common_name, code) values ('{}', '{}')""".format(fname, fcode))
+                connection.commit()
+                return render_template('facility_created.html')
+        return render_template('add_facility.html')
+
 if __name__ == "__main__":
     app.run(host=dbhost, port=dbport)

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!-- 'Add facility' page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
+<html>
+    <body>
+        <table align="center">
+            <tr><th>
+                <h2>Add Facility</h2>
+            </th></tr>
+            <tr><th>
+                <h3>
+                    Max common name length: 32 characters<br>
+                    Max code length: 6 characters
+                </h3>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('add_facility')}}" method="POST">
+                    Common name: <input type="text" name="facility_common_name"><br><br>
+                    Code: <input type="text" name="facility_code"><br><br>
+                    <input type="submit" value="Submit">
+                </form>
+            </th></tr>
+        </table>
+    </body>
+</html>
+
