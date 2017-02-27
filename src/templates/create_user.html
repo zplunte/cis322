@@ -6,22 +6,24 @@
         <table align="center">
             <tr><th>
                 <h2>Create User</h2>
-                Max username length: 16 characters<br><br>
+                Max username length: 16 characters<br>
                 Max password length: 16 characters<br><br>
             </th></tr>
             <tr><th>
-                <form action="{{url_for('create_user')}}" method="POST">
-                    Role: <input type="text" name="role"><br><br>
-                    Username: <input type="text" name="username"><br><br>
-                    Password: <input type="password" size="16" name="password"><br><br>
-                    <input type="submit" value="Submit">
-                </form>
-            </th></tr>
-            <tr><th>
-                <br>
-                <form action="{{url_for('index')}}">
-                    <input type="submit" value="Back">
-                </form>
+                <table align="center">
+                    <tr><th>
+                        <form action="{{url_for('create_user')}}" method="POST">
+                            Role: <input type="text" name="role"><br><br>
+                            Username: <input type="text" name="username"><br><br>
+                            Password: <input type="password" size="16" name="password"><br><br>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </th><th>
+                        <form action="{{url_for('index')}}">
+        
+                        </form>
+                    </th></tr>
+                </table>
             </th></tr>
         </table>
     </body>
