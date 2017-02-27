@@ -6,6 +6,3 @@ initdb -D $HOME/data
 
 # Start running database server, create logfile
 pg_ctl -D $HOME/data -l logfile start
-
-# Create the database 'lost'
-createdb lost
