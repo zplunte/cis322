@@ -4,28 +4,29 @@
 <html>
     <head>
         <style>
-            #grid { border: 1px solid black; padding: 8px; text-align: center }
+            #maintable { border: 4px solid #333333; background-color: #DDDDDD; padding: 8px; text-align: center }
+            #gridhead { border: 1px solid black; background-color: #BBBBBB; padding: 8px; text-align: center }
+            #gridcell { border: 1px solid black; background-color: #EEEEEE; padding: 8px; text-align: center }
         </style>
     </head>
-    <body>
-        <table align="center">
+    <body bgcolor="#FFFFFF">
+        <table id="maintable" align="center">
             <tr><th>
-                <h2>Add Asset</h2>
-                <b>Current assets:</b>
-                <table cellpadding="8">
-                    <tr><th id="grid">
-                        ID
-                    </th><th id="grid">
-                        TAG
-                    </th><th id="grid">
-                        DESCRIPTION
+                <h2>==== ADD ASSET ====</h2>
+                <table align="center">
+                    <tr><th id="gridhead">
+                        <u>ID</u>
+                    </th><th id="gridhead">
+                        <u>TAG</u>
+                    </th><th id="gridhead">
+                        <u>DESCRIPTION</u>
                     </th></tr>
                     {% for a in assets %}
-                        <tr><th id="grid">
+                        <tr><th id="gridcell">
                             {{a[0]}}.
-                        </th><th id="grid">
+                        </th><th id="gridcell">
                             {{a[1]}}
-                        </th><th id="grid">
+                        </th><th id="gridcell">
                             {{a[2]}}
                         </th></tr>
                     {% endfor %}
