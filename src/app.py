@@ -133,10 +133,10 @@ def add_asset():
         facility_list = get_facility_list()
         return render_template('add_asset.html', assets = asset_list, facilities = facility_list)
     if request.method == 'POST':
-        if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_name' in request.form and 'asset_arrival_time' in request.form:
+        if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_code' in request.form and 'asset_arrival_time' in request.form:
             atag = request.form['asset_tag']
             adesc = request.form['asset_description']
-            afname = request.form['asset_facility_name']
+            afname = request.form['asset_facility_code']
             aarrival = request.form['asset_arrival_time']
             if asset_exists(atag):
                 return render_template('asset_exists.html')
@@ -149,7 +149,8 @@ def add_asset():
 @app.route('/dispose_asset', methods=(['GET', 'POST']))
 def dispose_asset():
     if request.method == 'GET':
-        return render_template('dispose_asset.html')
+        asset_list = get_asset_list()
+        return render_template('dispose_asset.html', assets = asset_list)
     if request.method == 'POST':
         if 'disposal_asset_tag' in request.form and 'disposal_time' in request.form:
             datag = request.form['disposal_asset_tag']
@@ -158,6 +159,9 @@ def dispose_asset():
                 if (asset_is_disposed(datag)):
                     return render_template('asset_already_disposed.html')
                 else:
+                    curs.execute("""update assets set is_disposed=True where asset_tag='{}'""".format(datag))
+                    connection.commit()
+                    # need to also update disposal time
                     return render_template('asset_disposed.html')
             else:
                 return render_template('asset_does_not_exist.html') 

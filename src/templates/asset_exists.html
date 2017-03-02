@@ -2,20 +2,31 @@
 <!-- "Asset exists" page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
-    <body>
-        <table align="center">
-            <tr><th colspan="2">
-                <h2> * ASSET TAG NOT AVAILABLE * </h2>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <title>
+            LOST - Add Asset
+        </title>
+    </head>
+    <body background="{{url_for('static', filename='star_field.png')}}">
+        <br>
+        <table id="maintable" align="center">
+            <tr><th>
+                <h3 style="color:#990000">* ASSET TAG NOT AVAILABLE *</h3>
             </th></tr>
+        </table><br>
+        <table align="center">
             <tr><th>
                 <form action="{{url_for('add_asset')}}">
                     <input type="submit" value="Back">
                 </form>
             </th><th>
-                <form action="{{url_for('dashboard')}}">
-                    <input type="submit" value="Dashboard">
+                <form action="{{url_for('index')}}">
+                    <input type="submit" value="Login">
                 </form>
             </th></tr>
         </table>
     </body>
 </html>
+
