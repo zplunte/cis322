@@ -4,14 +4,18 @@
 <html>
     <body>
         <table align="center">
-            <tr><th>
-                <h3>Asset created successfully!</h3>
+            <tr><th colspan="2">
+                <h2>Asset created successfully!</h2>
             </th></tr>
             <tr><th>
                 <form action="{{url_for('add_asset')}}">
                     <input type="submit" value="Back">
                 </form>
-            </th></tr>
+            </th><th>
+                <form action="{{url_for('dashboard')}}">
+                    <input type="submit" value="Home">
+                </form>
+            <th></tr>
         </table>
     </body>
 </html>
