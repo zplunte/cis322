@@ -9,7 +9,7 @@
             LOST - Dashboard
         </title>
     </head>
-    <body>
+    <body background="{{url_for('static', filename='star_field.png')}}">
         <br>
         <table id="maintable" align="center">
             <tr><th colspan="2">
@@ -17,6 +17,18 @@
             </th></tr>
             <tr><th colspan="2">
                 <u>Welcome to LOST!</u><br><br>
+            </th></tr>
+            <tr><th id="gridhead" colspan="2">
+                <u>USERS SPECS</u>
+            </th></tr>
+            <tr><th id="gridcell" colspan="2">
+                Current user: (username)
+            </th></tr>
+            <tr><th id="gridcell" colspan="2">
+                User role: (role title)
+            </th></tr>
+            <tr><th id="gridhead" colspan="2">
+                <u>AVAILABLE PROCEDURES</u>
             </th></tr>
             <tr><th id="gridcell">
                 <form action="{{url_for('add_facility')}}">
