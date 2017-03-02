@@ -4,12 +4,16 @@
 <html>
     <body>
         <table align="center">
-            <tr><th>
-                <h3> * ASSET TAG NOT AVAILABLE * </h3>
+            <tr><th colspan="2">
+                <h2> * ASSET TAG NOT AVAILABLE * </h2>
             </th></tr>
             <tr><th>
                 <form action="{{url_for('add_asset')}}">
                     <input type="submit" value="Back">
+                </form>
+            </th><th>
+                <form action="{{url_for('dashboard')}}">
+                    <input type="submit" value="Dashboard">
                 </form>
             </th></tr>
         </table>
