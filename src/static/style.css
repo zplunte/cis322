@@ -16,6 +16,13 @@ table {
     text-align: center;
 }
 
+#backtable {
+    background-color: #181E3F;
+    border: 6px solid #F7CF35;
+    padding: 8px;
+    text-align: center;
+}
+
 #gridhead {
     background-color: #BBBBBB;
     border: 1px solid #000000;
