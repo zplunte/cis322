@@ -152,7 +152,9 @@ def dispose_asset():
         asset_list = get_asset_list()
         return render_template('dispose_asset.html', assets = asset_list)
     if request.method == 'POST':
-        if 'disposal_asset_tag' in request.form and 'disposal_time' in request.form:
+        if 'role' in session and 'disposal_asset_tag' in request.form and 'disposal_time' in request.form:
+            if session['role'] != "Logistics Officer":
+                return render_template('invalid_role_for_disposal.html')
             datag = request.form['disposal_asset_tag']
             dtime = request.form['disposal_time']
             if asset_exists(datag):
