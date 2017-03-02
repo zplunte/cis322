@@ -5,18 +5,12 @@ import psycopg2.extras
 import sys
 import json
 
-# NOTE: I am still having trouble pulling up data from the databases.
-# It seems like the data is being stored correctly, but I haven't 
-# figured out how to pull it up and format it appropriately on the HTML
-# pages. I attempted to do everything, but I didn't quite get that part
-# in time. I will be finishing the functionality of this iteration in 
-# the next few days.
-
 app = Flask(__name__)
 
 app.config['DB_NAME'] = dbname
 app.config['DB_PORT'] = dbport
 app.config['DB_HOST'] = dbhost
+app.secret_key = "A*3&@71j/018jfdsAJI17fds81#@1"
 
 connection = psycop.connect(database=dbname, host=dbhost, port=dbport)
 curs = connection.cursor()
@@ -24,6 +18,14 @@ curs = connection.cursor()
 @app.route('/', methods=(['POST', 'GET']))
 def home():
     return render_template('index.html')
+
+def get_user_role(uname):
+    curs.execute("""select role from userdata where username='{}'""".format(uname))
+    urole = curs.fetchone()
+    if urole != None:
+        return urole[0]
+    else:
+        return
 
 @app.route('/index', methods=(['POST', 'GET']))
 def index():
@@ -33,6 +35,8 @@ def index():
         if 'password' in request.form and 'username' in request.form:
             uname = request.form['username']
             if user_exists(uname):
+                session['username'] = uname
+                session['role'] = get_user_role(uname)
                 passwd = request.form['password']
                 curs.execute("""select password from userdata where username='{}'""".format(uname))
                 if curs.fetchone() is not None:
@@ -61,9 +65,10 @@ def create_user():
                 return render_template('user_created.html')
         return render_template('create_user.html')
 
-@app.route('/dashboard', methods=(['GET', 'POST']))
+@app.route('/dashboard', methods=(['GET']))
 def dashboard():
-    return render_template('dashboard.html')
+    if 'username' in session and 'role' in session:
+        return render_template('dashboard.html', username = session['username'], role = session['role'])
 
 def facility_exists(fname, fcode):
     curs.execute("""select common_name from facilities where common_name='{}'""".format(fname))
