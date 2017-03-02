@@ -5,29 +5,66 @@ import psycopg2.extras
 import sys
 import json
 
+# ==== INITIAL CONFIGURATION ==== #
+
 app = Flask(__name__)
 
 app.config['DB_NAME'] = dbname
 app.config['DB_PORT'] = dbport
 app.config['DB_HOST'] = dbhost
+
+# Define secret key for session functionality
 app.secret_key = "A*3&@71j/018jfdsAJI17fds81#@1"
 
+# Connect to psycopg2 as 'psycop' and get cursor as 'curs'
 connection = psycop.connect(database=dbname, host=dbhost, port=dbport)
 curs = connection.cursor()
 
-@app.route('/', methods=(['POST', 'GET']))
-def home():
-    return render_template('index.html')
+# ==== USEFUL UTILITY FUNCTIONS ==== #
 
+# Returns the role associated with a given username uname
 def get_user_role(uname):
     curs.execute("""select role from userdata where username='{}'""".format(uname))
     urole = curs.fetchone()
-    if urole != None:
-        return urole[0]
-    else:
-        return
+    return urole[0]
 
-@app.route('/index', methods=(['POST', 'GET']))
+# Returns list of columns in assets, excluding rows where is_disposed is true
+def get_asset_list():
+    curs.execute("""select * from assets where is_disposed=False""")
+    asset_list = curs.fetchall()
+    return asset_list
+
+# Returns true if the username uname is in the database
+def user_exists(uname):
+    curs.execute("""select username from userdata where username='{}'""".format(uname))
+    return (curs.fetchone() is not None)
+
+# Returns true if the asset_tag atag is in the database
+def asset_exists(atag):
+    curs.execute("""select asset_tag from assets where asset_tag='{}'""".format(atag))
+    return (curs.fetchone() is not None)
+
+# Returns true if fname or fcode exist in database as facility common_name or code
+def facility_exists(fname, fcode):
+    curs.execute("""select common_name from facilities where common_name='{}'""".format(fname))
+    result = (curs.fetchone() is not None)
+    curs.execute("""select code from facilities where code='{}'""".format(fcode))
+    result = result or (curs.fetchone() is not None)
+    return result
+
+# Return asset is_disposed state
+def asset_is_disposed(atag):
+    curs.execute("""select is_disposed from assets where asset_tag='{}'""".format(atag))
+    disposal_state = curs.fetchone()
+    if disposal_state != None:
+        return disposal_state[0]
+    return None
+
+# ==== ROUTES ==== #
+
+# Default page, prompts user login / user creation
+@app.route('/', methods=(['GET', 'POST']))
+@app.route('/index', methods=(['GET', 'POST']))
 def index():
     if request.method == 'GET':
         return render_template('index.html')
@@ -43,10 +80,6 @@ def index():
                     return dashboard()
         return render_template('invalid_login.html')
     return render_template('invalid_login.html')
-
-def user_exists(uname):
-    curs.execute("""select username from userdata where username='{}'""".format(uname))
-    return (curs.fetchone() is not None)
 
 @app.route('/create_user', methods=(['POST', 'GET']))
 def create_user():
@@ -70,13 +103,6 @@ def dashboard():
     if 'username' in session and 'role' in session:
         return render_template('dashboard.html', username = session['username'], role = session['role'])
 
-def facility_exists(fname, fcode):
-    curs.execute("""select common_name from facilities where common_name='{}'""".format(fname))
-    result = (curs.fetchone() is not None)
-    curs.execute("""select code from facilities where code='{}'""".format(fcode))
-    result = result or (curs.fetchone() is not None)
-    return result
-
 @app.route('/add_facility', methods=(['GET', 'POST']))
 def add_facility():
     if request.method == 'GET':
@@ -92,21 +118,6 @@ def add_facility():
                 connection.commit()
                 return render_template('facility_created.html')
         return render_template('add_facility.html')
-
-def asset_exists(atag):
-    curs.execute("""select asset_tag from assets where asset_tag='{}'""".format(atag))
-    return (curs.fetchone() is not None)
-
-def get_asset_list():
-    
-    # Returns a list of lists, where the list at index 0 contains asset pk's,
-    # index 1 contains asset tags, index 2 contains asset descriptions, index
-    # 3 contains is_disposed booleans, index 4 contains in_transit booleans
-
-    # Only retrieve listings for assets that have not been disposed
-    curs.execute("""select * from assets where is_disposed=False""")
-    asset_list = curs.fetchall()
-    return asset_list
 
 @app.route('/add_asset', methods=(['GET', 'POST']))
 def add_asset():
@@ -127,24 +138,8 @@ def add_asset():
                 return render_template('asset_created.html')
         return render_template('add_asset.html')
 
-def get_role(uname):
-    curs.execute("""select role from userdata where username='{}'""".format(uname))
-    role = curs.fetchone()
-    if role != None:
-        return role[0]
-    return None
-
-def asset_is_disposed(atag):
-    curs.execute("""select is_disposed from assets where asset_tag='{}'""".format(atag))
-    disposal_state = curs.fetchone()
-    if disposal_state != None:
-        return disposal_state[0]
-    return None
-
 @app.route('/dispose_asset', methods=(['GET', 'POST']))
 def dispose_asset():
-#    if session['role'] != 'Logistics Manager':
-#        return render_template('invalid_role_for_disposal.html')
     if request.method == 'GET':
         return render_template('dispose_asset.html')
     if request.method == 'POST':
@@ -179,6 +174,8 @@ def asset_report():
             else:
                 return report_date(repdate)
         return render_template('asset_report.html')
+
+# ==== RUN APP ==== #
 
 if __name__ == "__main__":
     app.run(host=dbhost, port=dbport)
