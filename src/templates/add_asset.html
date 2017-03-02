@@ -10,6 +10,7 @@
         </title>
     </head>
     <body>
+        <br>
         <table id="maintable" align="center">
             <tr><th>
                 <h2>==== ADD ASSET ====</h2>
@@ -47,18 +48,16 @@
                     <input type="submit" value="Submit">
                 </form>
             </th></tr>
+        </table><br>
+        <table align="center">
             <tr><th>
-                <table align="center">
-                    <tr><th>
-                        <form action="{{url_for('dashboard')}}">
-                            <input type="submit" value="Back">
-                        </form>
-                    </th><th>
-                        <form action="{{url_for('index')}}">
-                            <input type="submit" value="Logout">
-                        </form>
-                    </th></tr>
-                </table>
+                <form action="{{url_for('dashboard')}}">
+                    <input type="submit" value="Back">
+                </form>
+            </th><th>
+                <form action="{{url_for('index')}}">
+                    <input type="submit" value="Logout">
+                </form>
             </th></tr>
         </table>
     </body>

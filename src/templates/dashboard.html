@@ -2,37 +2,43 @@
 <!-- 'Dashboard' page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <title>
+            LOST - Dashboard
+        </title>
+    </head>
     <body>
-        <table align="center">
-            <tr><th>
-                <h2> Dashboard </h2>
-                <h3> Welcome to LOST! </h3>
+        <br>
+        <table id="maintable" align="center">
+            <tr><th colspan="2">
+                <h2>==== DASHBOARD ====</h2>
             </th></tr>
-            <tr><th>
+            <tr><th colspan="2">
+                <u>Welcome to LOST!</u><br><br>
+            </th></tr>
+            <tr><th id="gridcell">
                 <form action="{{url_for('add_facility')}}">
                     <input type="submit" value="Add Facility">
                 </form>
-            </th></tr>
-            <tr><th>
-                <br>
+            </th><th id="gridcell">
                 <form action="{{url_for('add_asset')}}">
                     <input type="submit" value="Add Asset">
                 </form>
             </th></tr>
-            <tr><th>
-                <br>
+            <tr><th id="gridcell">
                 <form action="{{url_for('dispose_asset')}}">
                     <input type="submit" value="Dispose Asset">
                 </form>
-            </th></tr>
-            <tr><th>
-                <br>
+            </th><th id="gridcell">
                 <form action="{{url_for('asset_report')}}">
                     <input type="submit" value="Asset Report">
                 </form>
             </th></tr>
+        </table><br>
+        <table align="center">
             <tr><th>
-                <br>
                 <form action="{{url_for('index')}}">
                     <input type="submit" value="Logout">
                 </form>
