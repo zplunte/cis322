@@ -1,29 +1,72 @@
 <!DOCTYPE html>
-<!-- 'Add facility' page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- 'Add asset' page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
-    <body>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <title>
+            LOST - Add Facility
+        </title>
+    </head>
+    <body background="{{url_for('static', filename='star_field.png')}}">
+        <br>
         <table align="center">
             <tr><th>
-                <h2>Add Facility</h2>
-                <h3>Current facilities:</h3>
-                ---- (nothing here yet) ----<br><br>
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
+            </th><th>
+                <table id="maintable" align="center">
+                    <tr><th>
+                        <h2>==== ADD FACILITY ====</h2>
+                        <table>
+                            <tr><th id="gridhead">
+                                <u>ID</u>
+                            </th><th id="gridhead">
+                                <u>CODE</u>
+                            </th><th id="gridhead">
+                                <u>COMMON NAME</u>
+                            </th></tr>
+                            {% for f in facilities %}
+                                <tr><th id="gridcell">
+                                    {{f[0]}}.
+                                </th><th id="gridcell">
+                                    {{f[1]}}
+                                </th><th id="gridcell">
+                                    {{f[2]}}
+                                </th></tr>
+                            {% endfor %}
+                        </table><br>
+                    </th></tr>
+                    <tr><th>
+                        <form action="{{url_for('add_facility')}}" method="POST">
+                            Code: <input type="text" name="facility_code"><br><br>
+                            Common Name: <input type="text" name="facility_common_name"><br><br>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </th></tr>
+                </table>
+            </th><th>
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
             </th></tr>
+        </table><br>
+        <table align="center">
             <tr><th>
-                    Max common name length: 32 characters<br>
-                    Max code length: 6 characters<br><br>
-            </th></tr>
-            <tr><th>
-                <form action="{{url_for('add_facility')}}" method="POST">
-                    Common name: <input type="text" name="facility_common_name"><br><br>
-                    Code: <input type="text" name="facility_code"><br><br>
-                    <input type="submit" value="Submit">
-                </form>
-            </th></tr>
-            <tr><th>
-                <br>
                 <form action="{{url_for('dashboard')}}">
                     <input type="submit" value="Back">
+                </form>
+            </th><th>
+                <form action="{{url_for('index')}}">
+                    <input type="submit" value="Logout">
                 </form>
             </th></tr>
         </table>

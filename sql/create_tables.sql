@@ -19,8 +19,8 @@ CREATE TABLE assets (
 /* Facilities table with primary key, common name, and facility code */
 CREATE TABLE facilities (
     facility_pk serial primary key,
-    common_name varchar(32),
-    code varchar(6)
+    code varchar(6),
+    common_name varchar(32)
 );
 
 /* Decided to create an extra table for asset/facility relationship data */

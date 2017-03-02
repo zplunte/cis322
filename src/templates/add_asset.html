@@ -46,12 +46,10 @@
                         <form action="{{url_for('add_asset')}}" method="POST">
                             Asset tag: <input type="text" name="asset_tag"><br><br>
                             Description: <input type="text" name="asset_description"><br><br>
-                            Facility: <select name="asset_facility_name">
-                                <option>facility 1</option>
-                                <option>facility 1</option>
-                                <option>facility 1</option>
-                                <option>facility 1</option>
-                                <option>facility 1</option>
+                            Facility: <select name="asset_facility_code">
+                                {% for f in facilities %}
+                                    <option value="{{f[0]}}">{{f[2]}}</option>
+                                {% endfor %}
                             </select><br><br>
                             Arrival time: <input type="text" name="asset_arrival_time"><br><br>
                             <input type="submit" value="Submit">

@@ -34,6 +34,12 @@ def get_asset_list():
     asset_list = curs.fetchall()
     return asset_list
 
+# Returns list of columns in facilities
+def get_facility_list():
+    curs.execute("""select * from facilities""")
+    facility_list = curs.fetchall()
+    return facility_list
+
 # Returns true if the username uname is in the database
 def user_exists(uname):
     curs.execute("""select username from userdata where username='{}'""".format(uname))
@@ -76,7 +82,7 @@ def index():
                 session['role'] = get_user_role(uname)
                 passwd = request.form['password']
                 curs.execute("""select password from userdata where username='{}'""".format(uname))
-                if curs.fetchone() is not None:
+                if curs.fetchone()[0] == passwd:
                     return dashboard()
         return render_template('invalid_login.html')
     return render_template('invalid_login.html')
@@ -106,7 +112,8 @@ def dashboard():
 @app.route('/add_facility', methods=(['GET', 'POST']))
 def add_facility():
     if request.method == 'GET':
-        return render_template('add_facility.html')
+        facility_list = get_facility_list()
+        return render_template('add_facility.html', facilities = facility_list)
     if request.method == 'POST':
         if 'facility_common_name' in request.form and 'facility_code' in request.form:
             fname = request.form['facility_common_name']
@@ -123,7 +130,8 @@ def add_facility():
 def add_asset():
     if request.method == 'GET':
         asset_list = get_asset_list()
-        return render_template('add_asset.html', assets = asset_list)
+        facility_list = get_facility_list()
+        return render_template('add_asset.html', assets = asset_list, facilities = facility_list)
     if request.method == 'POST':
         if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_name' in request.form and 'asset_arrival_time' in request.form:
             atag = request.form['asset_tag']
