@@ -2,12 +2,34 @@
 <!-- 'Add asset' page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
+    <head>
+        <style>
+            #grid { border: 1px solid black; padding: 8px; text-align: center }
+        </style>
+    </head>
     <body>
         <table align="center">
             <tr><th>
                 <h2>Add Asset</h2>
-                <h3>Current assets:</h3>
-                ---- (nothing here yet) ----<br><br>
+                <b>Current assets:</b>
+                <table cellpadding="8">
+                    <tr><th id="grid">
+                        ID
+                    </th><th id="grid">
+                        TAG
+                    </th><th id="grid">
+                        DESCRIPTION
+                    </th></tr>
+                    {% for a in assets %}
+                        <tr><th id="grid">
+                            {{a[0]}}.
+                        </th><th id="grid">
+                            {{a[1]}}
+                        </th><th id="grid">
+                            {{a[2]}}
+                        </th></tr>
+                    {% endfor %}
+                </table><br>
             </th></tr>
             <tr><th>
                 <form action="{{url_for('add_asset')}}" method="POST">

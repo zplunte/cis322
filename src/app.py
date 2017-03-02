@@ -56,9 +56,6 @@ def create_user():
             else:
                 urole = request.form['role']
                 upass = request.form['password']
-#                session['username'] = uname
-#                session['password'] = upass
-#                session['role'] = urole
                 curs.execute("""insert into userdata (username, password, role) values ('{}', '{}', '{}')""".format(uname, upass, urole))
                 connection.commit()
                 return render_template('user_created.html')
@@ -95,10 +92,22 @@ def asset_exists(atag):
     curs.execute("""select asset_tag from assets where asset_tag='{}'""".format(atag))
     return (curs.fetchone() is not None)
 
+def get_asset_list():
+    
+    # Returns a list of lists, where the list at index 0 contains asset pk's,
+    # index 1 contains asset tags, index 2 contains asset descriptions, index
+    # 3 contains is_disposed booleans, index 4 contains in_transit booleans
+
+    # Only retrieve listings for assets that have not been disposed
+    curs.execute("""select * from assets where is_disposed=False""")
+    asset_list = curs.fetchall()
+    return asset_list
+
 @app.route('/add_asset', methods=(['GET', 'POST']))
 def add_asset():
     if request.method == 'GET':
-        return render_template('add_asset.html')
+        asset_list = get_asset_list()
+        return render_template('add_asset.html', assets = asset_list)
     if request.method == 'POST':
         if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_name' in request.form and 'asset_arrival_time' in request.form:
             atag = request.form['asset_tag']
