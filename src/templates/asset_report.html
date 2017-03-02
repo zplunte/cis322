@@ -2,24 +2,81 @@
 <!-- 'Asset report' page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
-    <body>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <title>
+            LOST - Asset Report
+        </title>
+    </head>
+    <body background="{{url_for('static', filename='star_field.png')}}">
+        <br>
         <table align="center">
             <tr><th>
-                <h2>Asset Report</h2>
-                <h3>Current assets:</h3>
-                ---- (nothing here yet) ----<br><br>
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
+            </th><th>
+                <table id="maintable" align="center">
+                    <tr><th>
+                        <h2>==== ASSET REPORT ====</h2>
+                        <table align="center">
+                            <tr><th id="gridhead">
+                                <u>ID</u>
+                            </th><th id="gridhead">
+                                <u>TAG</u>
+                            </th><th id="gridhead">
+                                <u>DESCRIPTION</u>
+                            </th><th id="gridhead">
+                                <u>FACILITY</u>
+                            </th><th id="gridhead">
+                                <u>ARRIVAL DATE</u>
+                            </th><th id="gridhead">
+                                <u>DISPOSAL DATE</u>
+                            </th></tr>
+                            {% for a in assets %}
+                                <tr><th id="gridcell">
+                                    {{a[0]}}.
+                                </th><th id="gridcell">
+                                    {{a[1]}}
+                                </th><th id="gridcell">
+                                    {{a[2]}}
+                                </th></tr>
+                            {% endfor %}
+                        </table><br>
+                    </th></tr>
+                    <tr><th>
+                        <form action="{{url_for('asset_report')}}" method="POST">
+                            Date: <input type="text" name="report_date"><br><br>
+                            Facility: <select name="report_facility_code">
+                                {% for f in facilities %}
+                                    <option value="{{f[0]}}">{{f[2]}}</option>
+                                {% endfor %}
+                            </select><br><br>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </th></tr>
+                </table>
+            </th><th>
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
+                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
+                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
             </th></tr>
+        </table><br>
+        <table align="center">
             <tr><th>
-                <form action="{{url_for('asset_report')}}" method="POST">
-                    Date: <input type="text" name="report_date"><br><br>
-                    Facility (optional): <input type="text" name="report_facility"><br><br>
-                    <input type="submit" value="Submit">
-                </form>
-            </th></tr>
-            <tr><th>
-                <br>
                 <form action="{{url_for('dashboard')}}">
                     <input type="submit" value="Back">
+                </form>
+            </th><th>
+                <form action="{{url_for('index')}}">
+                    <input type="submit" value="Logout">
                 </form>
             </th></tr>
         </table>

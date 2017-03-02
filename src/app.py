@@ -169,24 +169,19 @@ def dispose_asset():
                 return render_template('asset_does_not_exist.html') 
         return render_template('dashboard.html')
 
-def report_date(repdate):
-    return render_template('asset_report.html')
-
-def report_date_and_fac(repdate, repfac):
-    return render_template('asset_report.html')
-
 @app.route('/asset_report', methods=(['GET', 'POST']))
 def asset_report():
     if request.method == 'GET':
-        return render_template('asset_report.html')
+        asset_list = get_asset_list()
+        facility_list = get_facility_list()
+        return render_template('asset_report.html', assets = asset_list, facilities = facility_list)
     if request.method == 'POST':
         if 'report_date' in request.form:
             repdate = request.form['report_date']
             if 'report_facility' in request.form:
                 repfac = request.form['report_facility']
-                return report_date_and_fac(repdate, repfac)
             else:
-                return report_date(repdate)
+                return render_template('asset_report.html')
         return render_template('asset_report.html')
 
 # ==== RUN APP ==== #
