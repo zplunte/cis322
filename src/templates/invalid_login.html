@@ -2,11 +2,21 @@
 <!-- "Invalid login" page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
-    <body>
-        <table align="center">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <title>
+            LOST - Invalid Login
+        </title>
+    </head>
+    <body background="{{url_for('static', filename='star_field.png')}}">
+        <br>
+        <table id="maintable" align="center">
             <tr><th>
-                <h3> * INVALID LOGIN * </h3>
+                <h3 style="color:#BB0000;">* INVALID LOGIN *</h3>
             </th></tr>
+        </table>
+        <table align="center">
             <tr><th>
                 <form action="{{url_for('index')}}">
                     <input type="submit" value="Back">
