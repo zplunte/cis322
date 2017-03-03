@@ -171,17 +171,16 @@ def dispose_asset():
 
 @app.route('/asset_report', methods=(['GET', 'POST']))
 def asset_report():
+    asset_list = get_asset_list()
+    facility_list = get_facility_list()
     if request.method == 'GET':
-        asset_list = get_asset_list()
-        facility_list = get_facility_list()
         return render_template('asset_report.html', assets = asset_list, facilities = facility_list)
     if request.method == 'POST':
         if 'report_date' in request.form:
             repdate = request.form['report_date']
             if 'report_facility' in request.form:
                 repfac = request.form['report_facility']
-            else:
-                return render_template('asset_report.html')
+            return render_template('asset_report.html', assets = asset_list, facilities = facility_list)
         return render_template('asset_report.html')
 
 # ==== RUN APP ==== #

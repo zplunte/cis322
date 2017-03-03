@@ -11,58 +11,40 @@
     </head>
     <body background="{{url_for('static', filename='star_field.png')}}">
         <br>
-        <table align="center">
+        <table id="maintable" align="center">
             <tr><th>
-                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
-                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
-                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
-                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
-                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50">
-                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50"><br>
-            </th><th>
-                <table id="maintable" align="center">
-                    <tr><th>
-                        <h2>==== ADD ASSET ====</h2>
-                        <table align="center">
-                            <tr><th id="gridhead">
-                                <u>ID</u>
-                            </th><th id="gridhead">
-                                <u>TAG</u>
-                            </th><th id="gridhead">
-                                <u>DESCRIPTION</u>
-                            </th></tr>
-                            {% for a in assets %}
-                                <tr><th id="gridcell">
-                                    {{a[0]}}.
-                                </th><th id="gridcell">
-                                    {{a[1]}}
-                                </th><th id="gridcell">
-                                    {{a[2]}}
-                                </th></tr>
-                            {% endfor %}
-                        </table><br>
+                <h2>==== ADD ASSET ====</h2>
+                <table align="center">
+                    <tr><th id="gridhead">
+                        <u>ID</u>
+                    </th><th id="gridhead">
+                        <u>TAG</u>
+                    </th><th id="gridhead">
+                        <u>DESCRIPTION</u>
                     </th></tr>
-                    <tr><th>
-                        <form action="{{url_for('add_asset')}}" method="POST">
-                            Asset tag: <input type="text" name="asset_tag"><br><br>
-                            Description: <input type="text" name="asset_description"><br><br>
-                            Facility: <select name="asset_facility_code">
-                                {% for f in facilities %}
-                                    <option value="{{f[0]}}">{{f[2]}}</option>
-                                {% endfor %}
-                            </select><br><br>
-                            Arrival time: <input type="text" name="asset_arrival_time"><br><br>
-                            <input type="submit" value="Submit">
-                        </form>
-                    </th></tr>
-                </table>
-            </th><th>
-                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
-                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
-                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
-                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
-                <img src="{{url_for('static', filename='dot.png')}}" align="center" width="50" height="50">
-                <img src="{{url_for('static', filename='line.png')}}" align="center" width="50" height="50"><br>
+                    {% for a in assets %}
+                        <tr><th id="gridcell">
+                            {{a[0]}}.
+                        </th><th id="gridcell">
+                            {{a[1]}}
+                        </th><th id="gridcell">
+                            {{a[2]}}
+                        </th></tr>
+                    {% endfor %}
+                </table><br>
+            </th></tr>
+            <tr><th>
+                <form action="{{url_for('add_asset')}}" method="POST">
+                    Asset tag: <input type="text" name="asset_tag"><br><br>
+                    Description: <input type="text" name="asset_description"><br><br>
+                    Facility: <select name="asset_facility_code">
+                        {% for f in facilities %}
+                            <option value="{{f[0]}}">{{f[2]}}</option>
+                        {% endfor %}
+                    </select><br><br>
+                    Arrival time: <input type="text" name="asset_arrival_time"><br><br>
+                    <input type="submit" value="Submit">
+                </form>
             </th></tr>
         </table><br>
         <table align="center">
