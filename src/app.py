@@ -133,15 +133,26 @@ def add_asset():
         facility_list = get_facility_list()
         return render_template('add_asset.html', assets = asset_list, facilities = facility_list)
     if request.method == 'POST':
-        if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_code' in request.form and 'asset_arrival_time' in request.form:
-            atag = request.form['asset_tag']
-            adesc = request.form['asset_description']
-            afname = request.form['asset_facility_code']
-            aarrival = request.form['asset_arrival_time']
-            if asset_exists(atag):
+        if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_code' in request.form and 'asset_arrival_year' in request.form and 'asset_arrival_month' in request.form and 'asset_arrival_day' in request.form:
+            a_tag = request.form['asset_tag']
+            a_desc = request.form['asset_description']
+            f_code = request.form['asset_facility_code']
+            arr_year = request.form['asset_arrival_year']
+            arr_month = request.form['asset_arrival_month']
+            arr_day = request.form['asset_arrival_day']
+            arr_date = arr_year + '-' + arr_month + '-' + arr_day 
+
+            if len(a_tag) == 0:
+                return render_template('empty_asset_tag.html')
+            if len(a_desc) == 0:
+                return render_template('empty_asset_desc.html')
+            
+            if asset_exists(a_tag):
                 return render_template('asset_exists.html')
             else:
-                curs.execute("""insert into assets (asset_tag, description) values ('{}', '{}')""".format(atag, adesc))
+                curs.execute("""insert into assets (asset_tag, description) values ('{}', '{}')""".format(a_tag, a_desc))
+                connection.commit()
+                curs.execute("""insert into asset_position (arrival_time, a_tag, f_code) values ('{}', '{}', '{}')""".format(arr_date, a_tag, f_code))
                 connection.commit()
                 return render_template('asset_created.html')
         return render_template('add_asset.html')
@@ -152,18 +163,22 @@ def dispose_asset():
         asset_list = get_asset_list()
         return render_template('dispose_asset.html', assets = asset_list)
     if request.method == 'POST':
-        if 'role' in session and 'disposal_asset_tag' in request.form and 'disposal_time' in request.form:
+        if 'role' in session and 'disposal_asset_tag' in request.form:
             if session['role'] != "Logistics Officer":
                 return render_template('invalid_role_for_disposal.html')
             datag = request.form['disposal_asset_tag']
-            dtime = request.form['disposal_time']
+            dis_year = request.form['asset_disposal_year']
+            dis_month = request.form['asset_disposal_month']
+            dis_day = request.form['asset_disposal_day']
+            dis_date = dis_year + '-' + dis_month + '-' + dis_day
             if asset_exists(datag):
                 if (asset_is_disposed(datag)):
                     return render_template('asset_already_disposed.html')
                 else:
                     curs.execute("""update assets set is_disposed=True where asset_tag='{}'""".format(datag))
                     connection.commit()
-                    # need to also update disposal time
+                    curs.execute("""update asset_position set departure_time='{}' where a_tag='{}'""".format(dis_date, datag))
+                    connection.commit()
                     return render_template('asset_disposed.html')
             else:
                 return render_template('asset_does_not_exist.html') 

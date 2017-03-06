@@ -27,6 +27,6 @@ CREATE TABLE facilities (
 CREATE TABLE asset_position (
     arrival_time date,
     departure_time date,
-    asset_fk int REFERENCES assets (asset_pk),
-    facility_fk int REFERENCES facilities (facility_pk)
+    a_tag varchar(16),
+    f_code varchar(6) 
 );
