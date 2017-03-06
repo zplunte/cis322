@@ -64,7 +64,23 @@
             </th><th>
                 <table id="maintable" align="center">
                     <tr><th id="gridhead">
-                        <h3>---- TO DO: ----</h3><br><br>
+                        <h3>---- CURRENT JOBS ----</h3>
+                        Set the following load/unload times:
+                    </th></tr>
+                    <tr><th id="gridcell">
+                        <form action="{{url_for('logistics_set_load_unload')}}">
+                            <input type="submit" value="Asset in transit #1">
+                        </form>
+                    </th></tr>
+                    <tr><th id="gridcell">
+                        <form action="{{url_for('logistics_set_load_unload')}}">
+                            <input type="submit" value="Asset in transit #2">
+                        </form>
+                    </th></tr>
+                    <tr><th id="gridcell">
+                        <form action="{{url_for('logistics_set_load_unload')}}">
+                            <input type="submit" value="Asset in transit #3">
+                        </form>
                     </th></tr>
                 </table>                
             </th></tr>

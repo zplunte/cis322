@@ -315,6 +315,20 @@ def transfer_request():
     if request.method == 'POST':
         return render_template('transfer_request.html')
 
+@app.route('/logistics_set_load_unload', methods=(['GET', 'POST']))
+def logistics_set_load_unload():
+    if request.method == 'GET':
+        return render_template('logistics_set_load_unload.html')
+    if request.method == 'POST':
+        return render_template('logistics_set_load_unload.html')
+
+@app.route('/approve_transfer_request', methods=(['GET', 'POST']))
+def approve_transfer_request():
+    if request.method == 'GET':
+        return render_template('approve_transfer_request.html')
+    if request.method == 'POST':
+        return render_template('approve_transfer_request.html')
+
 # ==== RUN APP ==== #
 
 if __name__ == "__main__":
