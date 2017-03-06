@@ -62,15 +62,61 @@ def get_add_dispose_asset_data_list():
 
 # Returns custom list of columns in joined assets and asset_position
 # and facilities, for asset_report screen
-def get_asset_report_data_list(test_date, test_facility_code):
+def get_asset_report_data_list(test_year, test_month, test_day, test_facility_code):
+
+    main_query = "select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time, asset_position.departure_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code"
+
     if test_facility_code == 'ALL_FACILITIES':
-        curs.execute("""select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time, asset_position.departure_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code where asset_position.arrival_time='{}' or asset_position.departure_time='{}'""".format(test_date, test_date))
-        data_list = curs.fetchall()
-        return data_list
+
+        if (test_year != 'none') and (test_month == 'none') and (test_day == 'none'):
+            test_date_start = test_year + '-01-01'
+            test_date_end = test_year + '-12-31'
+            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}')".format(test_date_start, test_date_end))
+            data_list = curs.fetchall()
+            return data_list
+
+        elif (test_year != 'none') and (test_month != 'none') and (test_day == 'none'):
+            test_date_start = test_year + '-' + test_month + '-01'
+            test_date_end = test_year + '-' + test_month + '-31'
+            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}')".format(test_date_start, test_date_end))
+            data_list = curs.fetchall()
+            return data_list
+
+        elif (test_year != 'none') and (test_month != 'none') and (test_day != 'none'):
+            test_date = test_year + '-' + test_month + '-' + test_day
+            curs.execute(main_query + " where asset_position.arrival_time = '{0}' or asset_position.departure_time = '{0}'".format(test_date))
+            data_list = curs.fetchall()
+            return data_list
+
+        else:
+            curs.execute(main_query)
+            data_list = curs.fetchall()
+            return data_list
     else:
-        curs.execute("""select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time, asset_position.departure_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code where asset_position.arrival_time='{}' or asset_position.departure_time='{}' and facilities.code='{}'""".format(test_date, test_date, test_facility_code))
-        data_list = curs.fetchall()
-        return data_list
+        if (test_year != 'none') and (test_month == 'none') and (test_day == 'none'):
+            test_date_start = test_year + '-01-01'
+            test_date_end = test_year + '-12-31'
+            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}') and facilities.code='{2}'".format(test_date_start, test_date_end, test_facility_code))
+            data_list = curs.fetchall()
+            return data_list
+
+        elif (test_year != 'none') and (test_month != 'none') and (test_day == 'none'):
+            test_date_start = test_year + '-' + test_month + '-01'
+            test_date_end = test_year + '-' + test_month + '-31'
+            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}') and facilities.code='{2}'".format(test_date_start, test_date_end, test_facility_code))
+            data_list = curs.fetchall()
+
+        elif (test_year != 'none') and (test_month != 'none') and (test_day != 'none'):
+            test_date = test_year + '-' + test_month + '-' + test_day
+            curs.execute(main_query + " where asset_position.arrival_time = '{0}' or asset_position.departure_time = '{0}' and facilities.code='{1}'".format(test_date, test_facility_code))
+            data_list = curs.fetchall()
+            return data_list
+
+        else:
+            curs.execute(main_query + " where facilities.code='{}'".format(test_facility_code))
+            data_list = curs.fetchall()
+            return data_list
+    return
 
 def get_asset_list_from_date(test_date):
     return
@@ -256,9 +302,8 @@ def asset_report():
             rep_year = request.form['report_year']
             rep_month = request.form['report_month']
             rep_day = request.form['report_day']
-            rep_date = rep_year + '-' + rep_month + '-' + rep_day
             rep_f_code = request.form['report_facility_code']
-            data_list = get_asset_report_data_list(rep_date, rep_f_code)
+            data_list = get_asset_report_data_list(rep_year, rep_month, rep_day, rep_f_code)
             return render_template('asset_report.html', data = data_list, facilities = facility_list)
         return render_template('asset_report.html')
 

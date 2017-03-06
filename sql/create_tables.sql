@@ -30,3 +30,16 @@ CREATE TABLE asset_position (
     a_tag varchar(16),
     f_code varchar(6) 
 );
+
+/* Decided to just have one transfer request table, load/unload date are specified in request form */
+CREATE TABLE transfer_requests (
+    requester varchar(16),
+    request_date date,
+    approver varchar(16),
+    approval_date date,
+    a_tag varchar(16), 
+    src_f_code varchar(6),
+    dest_f_code varchar(6),
+    load_date date,
+    unload_date date
+);
