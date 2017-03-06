@@ -118,14 +118,6 @@ def get_asset_report_data_list(test_year, test_month, test_day, test_facility_co
             return data_list
     return
 
-def get_asset_list_from_date(test_date):
-    return
-
-def get_asset_list_from_date_and_facility_code(test_date, test_facility_code):
-    return
-
-
-
 # Returns list of columns in facilities
 def get_facility_list():
     curs.execute("""select * from facilities""")
@@ -205,6 +197,8 @@ def create_user():
 @app.route('/dashboard', methods=(['GET']))
 def dashboard():
     if 'username' in session and 'role' in session:
+        if session['role'] == "Logistics Officer":
+                return render_template('logistics_dashboard.html', username = session['username'], role = session['role'])
         return render_template('dashboard.html', username = session['username'], role = session['role'])
 
 @app.route('/add_facility', methods=(['GET', 'POST']))
@@ -306,6 +300,20 @@ def asset_report():
             data_list = get_asset_report_data_list(rep_year, rep_month, rep_day, rep_f_code)
             return render_template('asset_report.html', data = data_list, facilities = facility_list)
         return render_template('asset_report.html')
+
+@app.route('/tranfer_report', methods=(['GET', 'POST']))
+def transfer_report():
+    if request.method == 'GET':
+        return render_template('transfer_report.html')
+    if request.method == 'POST':
+        return render_template('transfer_report.html')
+
+@app.route('/tranfer_request', methods=(['GET', 'POST']))
+def transfer_request():
+    if request.method == 'GET':
+        return render_template('transfer_request.html')
+    if request.method == 'POST':
+        return render_template('transfer_request.html')
 
 # ==== RUN APP ==== #
 
