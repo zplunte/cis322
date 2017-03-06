@@ -15,8 +15,6 @@
             <tr><th>
                 <h2>==== ADD ASSET ====</h2>
                 <table align="center">
-                    <tr><th id="gridhead">
-                        <u>ID</u>
                     </th><th id="gridhead">
                         <u>TAG</u>
                     </th><th id="gridhead">
@@ -28,15 +26,13 @@
                     </th></tr>
                     {% for a in assets %}
                         <tr><th id="gridcell">
-                            {{a[0]}}.
+                            {{a[0]}}
                         </th><th id="gridcell">
                             {{a[1]}}
                         </th><th id="gridcell">
                             {{a[2]}}
                         </th><th id="gridcell">
                             {{a[3]}}
-                        </th><th id="gridcell">
-                            {{a[4]}}
                         </th></tr>
                     {% endfor %}
                 </table><br>

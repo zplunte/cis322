@@ -43,13 +43,13 @@ def get_non_disposed_asset_list():
 
 # Returns list of columns in joined assets and asset_position
 def get_asset_list_with_position():
-    curs.execute("""select assets.asset_pk, assets.asset_tag, assets.description, assets.is_disposed, assets.in_transit, asset_position.arrival_time, asset_position.departure_time from assets inner join asset_position on assets.asset_tag=asset_position.a_tag""")
+    curs.execute("""select assets.asset_tag, assets.description, assets.is_disposed, assets.in_transit, asset_position.arrival_time, asset_position.departure_time from assets inner join asset_position on assets.asset_tag=asset_position.a_tag""")
     asset_list = curs.fetchall()
     return asset_list
 
 # Returns list of columns in joined non-disposed assets and asset_position
 def get_non_disposed_asset_list_with_position():
-    curs.execute("""select assets.asset_pk, assets.asset_tag, assets.description, assets.in_transit, asset_position.arrival_time from assets inner join asset_position on assets.asset_tag=asset_position.a_tag where assets.is_disposed=False""")
+    curs.execute("""select assets.asset_tag, assets.description, assets.in_transit, asset_position.arrival_time from assets inner join asset_position on assets.asset_tag=asset_position.a_tag where assets.is_disposed=False""")
     asset_list = curs.fetchall()
     return asset_list
 
@@ -166,7 +166,7 @@ def add_asset():
     if request.method == 'GET':
 
         # Get list of rows in assets
-        asset_list = get_asset_list_with_position()
+        asset_list = get_non_disposed_asset_list_with_position()
 
         # Get list of rows in facilities
         facility_list = get_facility_list()
