@@ -47,6 +47,12 @@ def get_asset_list_with_position():
     asset_list = curs.fetchall()
     return asset_list
 
+# Returns list of columns in joined non-disposed assets and asset_position
+def get_non_disposed_asset_list_with_position():
+    curs.execute("""select assets.asset_pk, assets.asset_tag, assets.description, assets.in_transit, asset_position.arrival_time from assets inner join asset_position on assets.asset_tag=asset_position.a_tag where assets.is_disposed=False""")
+    asset_list = curs.fetchall()
+    return asset_list
+
 def get_asset_list_from_date(test_date):
     return
 

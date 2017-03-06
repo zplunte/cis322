@@ -22,13 +22,9 @@
                     </th><th id="gridhead">
                         <u>DESCRIPTION</u>
                     </th><th id="gridhead">
-                        <u>IS DISPOSED</u>
-                    </th><th id="gridhead">
                         <u>IN TRANSIT</u>
                     </th><th id="gridhead">
                         <u>ARRIVAL DATE</u>
-                    </th><th id="gridhead">
-                        <u>DISPOSAL DATE</u>
                     </th></tr>
                     {% for a in assets %}
                         <tr><th id="gridcell">
@@ -41,10 +37,6 @@
                             {{a[3]}}
                         </th><th id="gridcell">
                             {{a[4]}}
-                        </th><th id="gridcell">
-                            {{a[5]}}
-                        </th><th id="gridcell">
-                            {{a[6]}}
                         </th></tr>
                     {% endfor %}
                 </table><br>
