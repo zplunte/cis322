@@ -28,17 +28,44 @@ def get_user_role(uname):
     urole = curs.fetchone()
     return urole[0]
 
-# Returns list of columns in assets, excluding rows where is_disposed is true
+# Returns list of columns in assets
 def get_asset_list():
+    curs.execute("""select * from assets""")
+    asset_list = curs.fetchall()
+    return asset_list
+
+# Returns list of columns in assets, excluding rows where is_disposed is true
+def get_non_disposed_asset_list():
     curs.execute("""select * from assets where is_disposed=False""")
     asset_list = curs.fetchall()
     return asset_list
+
+
+# Returns list of columns in joined assets and asset_position
+def get_asset_list_with_position():
+    curs.execute("""select assets.asset_pk, assets.asset_tag, assets.description, assets.is_disposed, assets.in_transit, asset_position.arrival_time, asset_position.departure_time from assets inner join asset_position on assets.asset_tag=asset_position.a_tag""")
+    asset_list = curs.fetchall()
+    return asset_list
+
+def get_asset_list_from_date(test_date):
+    return
+
+def get_asset_list_from_date_and_facility_code(test_date, test_facility_code):
+    return
+
+
 
 # Returns list of columns in facilities
 def get_facility_list():
     curs.execute("""select * from facilities""")
     facility_list = curs.fetchall()
     return facility_list
+
+# Returns list of columns in asset_position
+def get_asset_position_list():
+    curs.execute("""select * from asset_position""")
+    asset_position_list = curs.fetchall()
+    return asset_list
 
 # Returns true if the username uname is in the database
 def user_exists(uname):
@@ -128,10 +155,20 @@ def add_facility():
 
 @app.route('/add_asset', methods=(['GET', 'POST']))
 def add_asset():
+
+    # GET method procedure
     if request.method == 'GET':
-        asset_list = get_asset_list()
+
+        # Get list of rows in assets
+        asset_list = get_asset_list_with_position()
+
+        # Get list of rows in facilities
         facility_list = get_facility_list()
+
+        # Render add_asset.html, load asset_list as "assets", facility_list as "facilities"
         return render_template('add_asset.html', assets = asset_list, facilities = facility_list)
+
+    # POST method procedure
     if request.method == 'POST':
         if 'asset_tag' in request.form and 'asset_description' in request.form and 'asset_facility_code' in request.form and 'asset_arrival_year' in request.form and 'asset_arrival_month' in request.form and 'asset_arrival_day' in request.form:
             a_tag = request.form['asset_tag']
@@ -160,7 +197,7 @@ def add_asset():
 @app.route('/dispose_asset', methods=(['GET', 'POST']))
 def dispose_asset():
     if request.method == 'GET':
-        asset_list = get_asset_list()
+        asset_list = get_non_disposed_asset_list()
         return render_template('dispose_asset.html', assets = asset_list)
     if request.method == 'POST':
         if 'role' in session and 'disposal_asset_tag' in request.form:
