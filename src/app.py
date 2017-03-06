@@ -4,6 +4,7 @@ import psycopg2 as psycop
 import psycopg2.extras
 import sys
 import json
+import datetime
 
 # ==== INITIAL CONFIGURATION ==== #
 
@@ -308,12 +309,24 @@ def transfer_report():
     if request.method == 'POST':
         return render_template('transfer_report.html')
 
-@app.route('/tranfer_request', methods=(['GET', 'POST']))
-def transfer_request():
-    if request.method == 'GET':
-        return render_template('transfer_request.html')
-    if request.method == 'POST':
-        return render_template('transfer_request.html')
+@app.route('/transfer_req', methods=(['GET', 'POST']))
+def transfer_req():
+    if 'role' in session:
+        if session['role'] != "Logistics Officer":
+            return render_template('invalid_role_for_transfer_request.html')
+    facility_list = get_facility_list()
+    asset_list = get_non_disposed_asset_list()
+    if request.method == 'GET': 
+        return render_template('transfer_req.html', assets = asset_list, facilities = facility_list)
+    if request.method == 'POST': 
+        req_user = session['username']
+        req_date = str(datetime.datetime.now().date())
+        req_tag = request.form['transfer_asset_tag']
+        req_src = request.form['transfer_src_facility_code']
+        req_dest = request.form['transfer_dest_facility_code']
+        curs.execute("insert into transfer_requests (requester, request_date, a_tag, src_f_code, dest_f_code) values ('{0}','{1}','{2}','{3}','{4}')".format(req_user, req_date, req_tag, req_src, req_dest))
+        connection.commit()
+        return render_template('transfer_req_completed.html')
 
 @app.route('/logistics_set_load_unload', methods=(['GET', 'POST']))
 def logistics_set_load_unload():

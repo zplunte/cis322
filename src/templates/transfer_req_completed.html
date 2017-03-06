@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 'Transfer request' page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- "Transfer request completed" page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
     <head>
@@ -8,25 +8,24 @@
         <title>
             LOST - Transfer Request
         </title>
-    </head>
+    </head>    
     <body background="{{url_for('static', filename='star_field.png')}}">
         <br>
         <table id="maintable" align="center">
-            <tr><th>
-                <h2>==== TRANSFER REQUEST ====</h2>
+            <tr><th colspan="2">
+                <h3 style="color:#009900">* TRANSFER REQUEST COMPLETED! *</h3>
             </th></tr>
         </table><br>
         <table align="center">
             <tr><th>
-                <form action="{{url_for('dashboard')}}">
+                <form action="{{url_for('transfer_req')}}">
                     <input type="submit" value="Back">
                 </form>
             </th><th>
-                <form action="{{url_for('index')}}">
-                    <input type="submit" value="Logout">
+                <form action="{{url_for('dashboard')}}">
+                    <input type="submit" value="Dashboard">
                 </form>
-            </th></tr>
+            <th></tr>
         </table>
     </body>
 </html>
-
