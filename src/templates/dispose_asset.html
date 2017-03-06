@@ -15,20 +15,24 @@
             <tr><th>
                 <h2>==== DISPOSE ASSET ====</h2>
                 <table align="center">
-                    <tr><th id="gridhead">
-                        <u>ID</u>
                     </th><th id="gridhead">
                         <u>TAG</u>
                     </th><th id="gridhead">
                         <u>DESCRIPTION</u>
+                    </th><th id="gridhead">
+                        <u>FACILITY</u>
+                    </th><th id="gridhead">
+                        <u>ARRIVAL DATE</u>
                     </th></tr>
-                    {% for a in assets %}
+                    {% for d in data %}
                         <tr><th id="gridcell">
-                            {{a[0]}}.
+                            {{d[0]}}
                         </th><th id="gridcell">
-                            {{a[1]}}
+                            {{d[1]}}
                         </th><th id="gridcell">
-                            {{a[2]}}
+                            {{d[2]}}
+                        </th><th id="gridcell">
+                            {{d[3]}}
                         </th></tr>
                     {% endfor %}
                 </table><br>

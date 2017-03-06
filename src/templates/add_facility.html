@@ -15,25 +15,22 @@
             <tr><th>
                 <h2>==== ADD FACILITY ====</h2>
                 <table align="center">
-                    <tr><th id="gridhead">
-                        <u>ID</u>
                     </th><th id="gridhead">
                         <u>CODE</u>
                     </th><th id="gridhead">
                         <u>COMMON NAME</u>
                     </th></tr>
-                    {% for f in facilities %}
+                    {% for d in data %}
                         <tr><th id="gridcell">
-                            {{f[0]}}.
+                            {{d[0]}}
                         </th><th id="gridcell">
-                            {{f[1]}}
-                        </th><th id="gridcell">
-                            {{f[2]}}
+                            {{d[1]}}
                         </th></tr>
                     {% endfor %}
-                </table><br>
+                </table>
             </th></tr>
             <tr><th>
+                Max code length: 6 characters<br><br>
                 <form action="{{url_for('add_facility')}}" method="POST">
                     Code: <input type="text" name="facility_code"><br><br>
                     Common Name: <input type="text" name="facility_common_name"><br><br>

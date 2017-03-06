@@ -47,11 +47,30 @@ def get_asset_list_with_position():
     asset_list = curs.fetchall()
     return asset_list
 
-# Returns list of columns in joined non-disposed assets and asset_position
-def get_non_disposed_asset_list_with_position():
-    curs.execute("""select assets.asset_tag, assets.description, assets.in_transit, asset_position.arrival_time from assets inner join asset_position on assets.asset_tag=asset_position.a_tag where assets.is_disposed=False""")
+# Returns custom list of columns in facilities, for add_facility screen
+def get_add_facility_data_list():
+    curs.execute("""select code, common_name from facilities""")
+    facilities_list = curs.fetchall()
+    return facilities_list 
+
+# Returns custom list of columns in joined non-disposed assets 
+# and asset_position and facilities, for add/dispose_asset screens
+def get_add_dispose_asset_data_list():
+    curs.execute("""select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code where assets.is_disposed=False""")
     asset_list = curs.fetchall()
     return asset_list
+
+# Returns custom list of columns in joined assets and asset_position
+# and facilities, for asset_report screen
+def get_asset_report_data_list(test_date, test_facility_code):
+    if test_facility_code == 'ALL_FACILITIES':
+        curs.execute("""select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time, asset_position.departure_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code where asset_position.arrival_time='{}' or asset_position.departure_time='{}'""".format(test_date, test_date))
+        data_list = curs.fetchall()
+        return data_list
+    else:
+        curs.execute("""select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time, asset_position.departure_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code where asset_position.arrival_time='{}' or asset_position.departure_time='{}' and facilities.code='{}'""".format(test_date, test_date, test_facility_code))
+        data_list = curs.fetchall()
+        return data_list
 
 def get_asset_list_from_date(test_date):
     return
@@ -145,8 +164,8 @@ def dashboard():
 @app.route('/add_facility', methods=(['GET', 'POST']))
 def add_facility():
     if request.method == 'GET':
-        facility_list = get_facility_list()
-        return render_template('add_facility.html', facilities = facility_list)
+        data_list = get_add_facility_data_list()
+        return render_template('add_facility.html', data = data_list)
     if request.method == 'POST':
         if 'facility_common_name' in request.form and 'facility_code' in request.form:
             fname = request.form['facility_common_name']
@@ -166,13 +185,13 @@ def add_asset():
     if request.method == 'GET':
 
         # Get list of rows in assets
-        asset_list = get_non_disposed_asset_list_with_position()
+        data_list = get_add_dispose_asset_data_list()
 
         # Get list of rows in facilities
         facility_list = get_facility_list()
 
         # Render add_asset.html, load asset_list as "assets", facility_list as "facilities"
-        return render_template('add_asset.html', assets = asset_list, facilities = facility_list)
+        return render_template('add_asset.html', data = data_list, facilities = facility_list)
 
     # POST method procedure
     if request.method == 'POST':
@@ -203,8 +222,8 @@ def add_asset():
 @app.route('/dispose_asset', methods=(['GET', 'POST']))
 def dispose_asset():
     if request.method == 'GET':
-        asset_list = get_non_disposed_asset_list()
-        return render_template('dispose_asset.html', assets = asset_list)
+        data_list = get_add_dispose_asset_data_list()
+        return render_template('dispose_asset.html', data = data_list)
     if request.method == 'POST':
         if 'role' in session and 'disposal_asset_tag' in request.form:
             if session['role'] != "Logistics Officer":
@@ -229,16 +248,18 @@ def dispose_asset():
 
 @app.route('/asset_report', methods=(['GET', 'POST']))
 def asset_report():
-    asset_list = get_asset_list()
     facility_list = get_facility_list()
     if request.method == 'GET':
-        return render_template('asset_report.html', assets = asset_list, facilities = facility_list)
+        return render_template('asset_report.html', facilities = facility_list)
     if request.method == 'POST':
-        if 'report_date' in request.form:
-            repdate = request.form['report_date']
-            if 'report_facility' in request.form:
-                repfac = request.form['report_facility']
-            return render_template('asset_report.html', assets = asset_list, facilities = facility_list)
+        if 'report_year' in request.form and 'report_month' in request.form and 'report_day' in request.form and 'report_facility_code' in request.form:
+            rep_year = request.form['report_year']
+            rep_month = request.form['report_month']
+            rep_day = request.form['report_day']
+            rep_date = rep_year + '-' + rep_month + '-' + rep_day
+            rep_f_code = request.form['report_facility_code']
+            data_list = get_asset_report_data_list(rep_date, rep_f_code)
+            return render_template('asset_report.html', data = data_list, facilities = facility_list)
         return render_template('asset_report.html')
 
 # ==== RUN APP ==== #

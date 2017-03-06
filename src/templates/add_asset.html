@@ -20,30 +20,31 @@
                     </th><th id="gridhead">
                         <u>DESCRIPTION</u>
                     </th><th id="gridhead">
-                        <u>IN TRANSIT</u>
+                        <u>FACILITY</u>
                     </th><th id="gridhead">
                         <u>ARRIVAL DATE</u>
                     </th></tr>
-                    {% for a in assets %}
+                    {% for d in data %}
                         <tr><th id="gridcell">
-                            {{a[0]}}
+                            {{d[0]}}
                         </th><th id="gridcell">
-                            {{a[1]}}
+                            {{d[1]}}
                         </th><th id="gridcell">
-                            {{a[2]}}
+                            {{d[2]}}
                         </th><th id="gridcell">
-                            {{a[3]}}
+                            {{d[3]}}
                         </th></tr>
                     {% endfor %}
-                </table><br>
+                </table>
             </th></tr>
             <tr><th>
+                Max tag length: 16 characters<br><br>
                 <form action="{{url_for('add_asset')}}" method="POST">
                     Asset tag: <input type="text" name="asset_tag"><br><br>
                     Description: <input type="text" name="asset_description"><br><br>
                     Facility: <select name="asset_facility_code">
                         {% for f in facilities %}
-                            <option value="{{f[0]}}">{{f[2]}}</option>
+                            <option value="{{f[1]}}">{{f[2]}}</option>
                         {% endfor %}
                     </select><br><br>
                     Arrival time:
