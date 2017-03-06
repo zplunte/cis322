@@ -157,6 +157,12 @@ def asset_is_disposed(atag):
         return disposal_state[0]
     return None
 
+# Returns list of columns in transfer_requests
+def get_transfer_requests_needing_approval_list():
+    curs.execute("select * from transfer_requests where approver is null")
+    asset_list = curs.fetchall()
+    return asset_list
+
 # ==== ROUTES ==== #
 
 # Default page, prompts user login / user creation
@@ -199,8 +205,11 @@ def create_user():
 def dashboard():
     if 'username' in session and 'role' in session:
         if session['role'] == "Logistics Officer":
-                return render_template('logistics_dashboard.html', username = session['username'], role = session['role'])
-        return render_template('dashboard.html', username = session['username'], role = session['role'])
+            return render_template('logistics_dashboard.html', username = session['username'], role = session['role'])
+
+        else:
+            job_list = get_transfer_requests_needing_approval_list() 
+            return render_template('dashboard.html', username = session['username'], role = session['role'], jobs = job_list)
 
 @app.route('/add_facility', methods=(['GET', 'POST']))
 def add_facility():
@@ -328,19 +337,23 @@ def transfer_req():
         connection.commit()
         return render_template('transfer_req_completed.html')
 
+@app.route('/approve_req', methods=(['GET', 'POST']))
+def approve_req():
+    if 'role' in session:
+        if session['role'] != "Facilities Officer":
+            return render_template('invalid_role_for_transfer_approval.html')
+    if request.method == 'GET':
+        
+        return render_template('approve_req.html')
+    if request.method == 'POST':
+        return render_template('approve_req.html')
+
 @app.route('/logistics_set_load_unload', methods=(['GET', 'POST']))
 def logistics_set_load_unload():
     if request.method == 'GET':
         return render_template('logistics_set_load_unload.html')
     if request.method == 'POST':
         return render_template('logistics_set_load_unload.html')
-
-@app.route('/approve_transfer_request', methods=(['GET', 'POST']))
-def approve_transfer_request():
-    if request.method == 'GET':
-        return render_template('approve_transfer_request.html')
-    if request.method == 'POST':
-        return render_template('approve_transfer_request.html')
 
 # ==== RUN APP ==== #
 

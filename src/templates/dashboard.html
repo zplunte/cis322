@@ -58,21 +58,13 @@
                         <h3>---- CURRENT JOBS ----</h3>
                         Approve or deny the following transfer requests:
                     </th></tr>
-                    <tr><th id="gridcell">
-                        <form action="{{url_for('approve_transfer_request')}}">
-                            <input type="submit" value="Transfer request #1">
-                        </form>
-                    </th></tr>
-                    <tr><th id="gridcell">
-                        <form action="{{url_for('approve_transfer_request')}}">
-                            <input type="submit" value="Transfer request #2">
-                        </form>
-                    </th></tr>
-                    <tr><th id="gridcell">
-                        <form action="{{url_for('approve_transfer_request')}}">
-                            <input type="submit" value="Transfer request #2">
-                        </form>
-                    </th></tr>
+                    {% for j in jobs %}
+                        <tr><th id="gridcell">
+                            <form action="{{url_for('approve_req')}}" method="GET">
+                                <input type="submit" value="TAG: {{j[4]}} | SRC: {{j[5]}} | DEST: {{j[6]}} | DATE: {{j[1]}} | USER: {{j[0]}}">
+                            </form>
+                        </th></tr>
+                    {% endfor %}
                 </table>
             </th></tr>
         </table><br>
