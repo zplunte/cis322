@@ -1,0 +1,11 @@
+import_data.sh
+
+    - Bash script that takes <dbname> as 1st arg and <input_dir> as 2nd arg.
+      Imports all present .csv files in the input directory into the sepcified
+      database.
+
+import_csv.py
+
+    - Python script takes <dbname> as 1st arg <tablename> as 2nd arg <full_path> 
+      as 3rd arg. Imports the present .csv file specified by full_path into the 
+      specified database.
