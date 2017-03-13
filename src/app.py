@@ -352,6 +352,16 @@ def get_specific_request_data(test_req_pk):
     req_list = curs.fetchall()
     return req_list
 
+def accept_transfer_request(app_user, req_for_app):
+    curs.execute("""update transfer_requests set approver='{}' where request_pk='{}'""".format(app_user, req_for_app))
+    connection.commit()
+    return;
+
+def reject_transfer_request(req_for_app):
+    curs.execute("""delete from transfer_requests where request_pk='{}'""".format(req_for_app))
+    connection.commit()
+    return;
+
 @app.route('/approve_req', methods=(['GET', 'POST']))
 def approve_req():
     if 'role' in session:
@@ -360,6 +370,7 @@ def approve_req():
     if request.method == 'GET':
         if 'req_for_approval_pk' in request.args:
             req_for_app = request.args['req_for_approval_pk']
+            session['req_for_approval_pk'] = req_for_app
             if request_exists(req_for_app):
                 if request_not_approved(req_for_app):
                     specific_req_data = get_specific_request_data(req_for_app)
@@ -370,7 +381,13 @@ def approve_req():
                 return render_template('req_does_not_exist.html')
         return render_template('req_does_not_exist.html')
     if request.method == 'POST':
-        return render_template('approve_req.html')
+        if 'req_accept' in request.form:
+            accept_transfer_request(session['username'], session['req_for_approval_pk'])
+            return dashboard()
+        if 'req_reject' in request.form:
+            reject_transfer_request(session['req_for_approval_pk'])
+            return dashboard()
+        return render_template('req_does_not_exist.html')
 
 @app.route('/logistics_set_load_unload', methods=(['GET', 'POST']))
 def logistics_set_load_unload():
