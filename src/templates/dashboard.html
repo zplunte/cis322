@@ -61,6 +61,7 @@
                     {% for j in jobs %}
                         <tr><th id="gridcell">
                             <form action="{{url_for('approve_req')}}" method="GET">
+                                <input type="text" name="req_for_approval_pk" value="{{j[0]}}" size="4" readonly>
                                 <input type="submit" value="TAG: {{j[5]}} | SRC: {{j[6]}} | DEST: {{j[7]}} | DATE: {{j[2]}} | USER: {{j[1]}}">
                             </form>
                         </th></tr>
