@@ -16,8 +16,8 @@ if __name__ == '__main__':
     outdir  = args.outdir
     dbname = args.dbname
 
-    connection = psycop.connect(database=dbname, host="\tmp", port="5432")
+    connection = psycop.connect(database=dbname, host="/tmp", port="5432")
     curs = connection.cursor()
 
-    query = """select username, password, role, active from userdata"""
-    make_csv(query, outdir+"/users.csv", curs)
+    query = """select asset_tag, description, initial_facility, aquired, disposed from assets"""
+    make_csv(query, outdir+"/assets.csv", curs)

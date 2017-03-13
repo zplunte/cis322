@@ -28,10 +28,10 @@ fi
 ./export_users.py $DATABASE $OUTDIR
 
 # Export facilities data to $OUTDIR/facilities.csv using python script
-# ./export_facilities.py $DATABASE $OUTDIR
+./export_facilities.py $DATABASE $OUTDIR
 
 # Export assets data to $OUTDIR/assets.csv using python script
 # ./export_assets.py $DATABASE $OUTDIR
  
 # Export transfers data to $OUTDIR/transfer.csv using python script
-# ./export_transfers.py $DATABASE $OUTDIR
+./export_transfers.py $DATABASE $OUTDIR

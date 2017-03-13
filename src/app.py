@@ -25,7 +25,7 @@ curs = connection.cursor()
 
 # Returns the role associated with a given username uname
 def get_user_role(uname):
-    curs.execute("""select role from userdata where username='{}'""".format(uname))
+    curs.execute("""select role from users where username='{}'""".format(uname))
     urole = curs.fetchone()
     return urole[0]
 
@@ -50,14 +50,14 @@ def get_asset_list_with_position():
 
 # Returns custom list of columns in facilities, for add_facility screen
 def get_add_facility_data_list():
-    curs.execute("""select code, common_name from facilities""")
+    curs.execute("""select fcode, common_name from facilities""")
     facilities_list = curs.fetchall()
     return facilities_list 
 
 # Returns custom list of columns in joined non-disposed assets 
 # and asset_position and facilities, for add/dispose_asset screens
 def get_add_dispose_asset_data_list():
-    curs.execute("""select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code where assets.is_disposed=False""")
+    curs.execute("""select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.fcode where assets.is_disposed=False""")
     asset_list = curs.fetchall()
     return asset_list
 
@@ -65,7 +65,7 @@ def get_add_dispose_asset_data_list():
 # and facilities, for asset_report screen
 def get_asset_report_data_list(test_year, test_month, test_day, test_facility_code):
 
-    main_query = "select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time, asset_position.departure_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.code"
+    main_query = "select assets.asset_tag, assets.description, facilities.common_name, asset_position.arrival_time, asset_position.departure_time from assets join asset_position on assets.asset_tag=asset_position.a_tag left join facilities on asset_position.f_code=facilities.fcode"
 
     if test_facility_code == 'ALL_FACILITIES':
 
@@ -97,24 +97,24 @@ def get_asset_report_data_list(test_year, test_month, test_day, test_facility_co
         if (test_year != 'none') and (test_month == 'none') and (test_day == 'none'):
             test_date_start = test_year + '-01-01'
             test_date_end = test_year + '-12-31'
-            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}') and facilities.code='{2}'".format(test_date_start, test_date_end, test_facility_code))
+            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}') and facilities.fcode='{2}'".format(test_date_start, test_date_end, test_facility_code))
             data_list = curs.fetchall()
             return data_list
 
         elif (test_year != 'none') and (test_month != 'none') and (test_day == 'none'):
             test_date_start = test_year + '-' + test_month + '-01'
             test_date_end = test_year + '-' + test_month + '-31'
-            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}') and facilities.code='{2}'".format(test_date_start, test_date_end, test_facility_code))
+            curs.execute(main_query + " where (asset_position.arrival_time >= '{0}' and asset_position.arrival_time <= '{1}') or (asset_position.departure_time >= '{0}' and asset_position.departure_time <= '{1}') and facilities.fcode='{2}'".format(test_date_start, test_date_end, test_facility_code))
             data_list = curs.fetchall()
 
         elif (test_year != 'none') and (test_month != 'none') and (test_day != 'none'):
             test_date = test_year + '-' + test_month + '-' + test_day
-            curs.execute(main_query + " where asset_position.arrival_time = '{0}' or asset_position.departure_time = '{0}' and facilities.code='{1}'".format(test_date, test_facility_code))
+            curs.execute(main_query + " where asset_position.arrival_time = '{0}' or asset_position.departure_time = '{0}' and facilities.fcode='{1}'".format(test_date, test_facility_code))
             data_list = curs.fetchall()
             return data_list
 
         else:
-            curs.execute(main_query + " where facilities.code='{}'".format(test_facility_code))
+            curs.execute(main_query + " where facilities.fcode='{}'".format(test_facility_code))
             data_list = curs.fetchall()
             return data_list
     return
@@ -133,7 +133,7 @@ def get_asset_position_list():
 
 # Returns true if the username uname is in the database
 def user_exists(uname):
-    curs.execute("""select username from userdata where username='{}'""".format(uname))
+    curs.execute("""select username from users where username='{}'""".format(uname))
     return (curs.fetchone() is not None)
 
 # Returns true if the asset_tag atag is in the database
@@ -145,7 +145,7 @@ def asset_exists(atag):
 def facility_exists(fname, fcode):
     curs.execute("""select common_name from facilities where common_name='{}'""".format(fname))
     result = (curs.fetchone() is not None)
-    curs.execute("""select code from facilities where code='{}'""".format(fcode))
+    curs.execute("""select fcode from facilities where fcode='{}'""".format(fcode))
     result = result or (curs.fetchone() is not None)
     return result
 
@@ -157,15 +157,15 @@ def asset_is_disposed(atag):
         return disposal_state[0]
     return None
 
-# Returns list of columns in transfer_requests
+# Returns list of columns in transfers
 def get_transfer_requests_needing_approval_list():
-    curs.execute("select * from transfer_requests where approver is null")
+    curs.execute("select * from transfers where approve_by is null")
     asset_list = curs.fetchall()
     return asset_list
 
-# Returns list of columns in transfer_requests
+# Returns list of columns in transfers
 def get_transfer_requests_needing_transit_update_list():
-    curs.execute("select * from transfer_requests where unload_date is null")
+    curs.execute("select * from transfers where unload_dt is null")
     result = curs.fetchall()
     return result
 
@@ -184,7 +184,7 @@ def index():
                 session['username'] = uname
                 session['role'] = get_user_role(uname)
                 passwd = request.form['password']
-                curs.execute("""select password from userdata where username='{}'""".format(uname))
+                curs.execute("""select password from users where username='{}'""".format(uname))
                 if curs.fetchone()[0] == passwd:
                     return dashboard()
         return render_template('invalid_login.html')
@@ -202,7 +202,7 @@ def create_user():
             else:
                 urole = request.form['role']
                 upass = request.form['password']
-                curs.execute("""insert into userdata (username, password, role) values ('{}', '{}', '{}')""".format(uname, upass, urole))
+                curs.execute("""insert into users (username, password, role) values ('{}', '{}', '{}')""".format(uname, upass, urole))
                 connection.commit()
                 return render_template('user_created.html')
         return render_template('create_user.html')
@@ -229,7 +229,7 @@ def add_facility():
             if facility_exists(fname, fcode):
                 return render_template('facility_exists.html')
             else: 
-                curs.execute("""insert into facilities (common_name, code) values ('{}', '{}')""".format(fname, fcode))
+                curs.execute("""insert into facilities (common_name, fcode) values ('{}', '{}')""".format(fname, fcode))
                 connection.commit()
                 return render_template('facility_created.html')
         return render_template('add_facility.html')
@@ -339,35 +339,35 @@ def transfer_req():
         req_tag = request.form['transfer_asset_tag']
         req_src = request.form['transfer_src_facility_code']
         req_dest = request.form['transfer_dest_facility_code']
-        curs.execute("insert into transfer_requests (requester, request_date, a_tag, src_f_code, dest_f_code) values ('{0}','{1}','{2}','{3}','{4}')".format(req_user, req_date, req_tag, req_src, req_dest))
+        curs.execute("insert into transfers (request_by, request_dt, asset_tag, source, destination) values ('{0}','{1}','{2}','{3}','{4}')".format(req_user, req_date, req_tag, req_src, req_dest))
         connection.commit()
         return render_template('transfer_req_completed.html')
 
 def request_exists(test_req_pk):
-    curs.execute("""select request_pk from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    curs.execute("""select request_pk from transfers where request_pk='{}'""".format(test_req_pk))
     return (curs.fetchone() is not None)
 
 def request_not_approved(test_req_pk):
-    curs.execute("""select approver from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    curs.execute("""select approve_by from transfers where request_pk='{}'""".format(test_req_pk))
     approver = curs.fetchone()
     if approver != None:
         return approver[0] == None
     return true
 
 def get_specific_request_data(test_req_pk):
-    curs.execute("""select * from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    curs.execute("""select * from transfers where request_pk='{}'""".format(test_req_pk))
     req_list = curs.fetchall()
     return req_list
 
 def accept_transfer_request(app_user, req_for_app):
-    curs.execute("""update transfer_requests set approver='{}' where request_pk='{}'""".format(app_user, req_for_app))
+    curs.execute("""update transfers set approve_by='{}' where request_pk='{}'""".format(app_user, req_for_app))
     app_date = str(datetime.datetime.now().date())
-    curs.execute("""update transfer_requests set approval_date='{}' where request_pk='{}'""".format(app_date, req_for_app))
+    curs.execute("""update transfers set approve_dt='{}' where request_pk='{}'""".format(app_date, req_for_app))
     connection.commit()
     return;
 
 def reject_transfer_request(req_for_app):
-    curs.execute("""delete from transfer_requests where request_pk='{}'""".format(req_for_app))
+    curs.execute("""delete from transfers where request_pk='{}'""".format(req_for_app))
     connection.commit()
     return;
 
@@ -400,18 +400,18 @@ def approve_req():
 
 def update_transit_load(req_pk, upd_year, upd_month, upd_day):
     upd_date = upd_year + '-' + upd_month + '-' + upd_day 
-    curs.execute("""update transfer_requests set load_date='{}' where request_pk='{}'""".format(upd_date, req_pk))
+    curs.execute("""update transfers set load_dt='{}' where request_pk='{}'""".format(upd_date, req_pk))
     connection.commit()
     return;
 
 def update_transit_unload(req_pk, upd_year, upd_month, upd_day):
     upd_date = upd_year + '-' + upd_month + '-' + upd_day
-    curs.execute("""update transfer_requests set unload_date='{}' where request_pk='{}'""".format(upd_date, req_pk))
+    curs.execute("""update transfers set unload_dt='{}' where request_pk='{}'""".format(upd_date, req_pk))
     connection.commit() 
     return;A
 
 def request_not_updated(test_req_pk):
-    curs.execute("""select unload_date from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    curs.execute("""select unload_dt from transfers where request_pk='{}'""".format(test_req_pk))
     unload_date = curs.fetchone()
     if unload_date != None:
         return unload_date[0] == None
