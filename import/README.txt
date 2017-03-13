@@ -4,6 +4,9 @@ import_data.sh
       Imports all present .csv files in the input directory into the sepcified
       database.
 
+      NOTE: <input_dir> must be the FULL path name to a directory, and it should 
+            not end with '/'
+
 import_csv.py
 
     - Python script takes <dbname> as 1st arg <tablename> as 2nd arg <full_path> 
