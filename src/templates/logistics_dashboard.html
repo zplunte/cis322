@@ -67,21 +67,14 @@
                         <h3>---- CURRENT JOBS ----</h3>
                         Set the following load/unload times:
                     </th></tr>
-                    <tr><th id="gridcell">
-                        <form action="{{url_for('logistics_set_load_unload')}}">
-                            <input type="submit" value="Asset in transit #1">
-                        </form>
-                    </th></tr>
-                    <tr><th id="gridcell">
-                        <form action="{{url_for('logistics_set_load_unload')}}">
-                            <input type="submit" value="Asset in transit #2">
-                        </form>
-                    </th></tr>
-                    <tr><th id="gridcell">
-                        <form action="{{url_for('logistics_set_load_unload')}}">
-                            <input type="submit" value="Asset in transit #3">
-                        </form>
-                    </th></tr>
+                    {% for j in jobs %}
+                        <tr><th id="gridcell">
+                            <form action="{{url_for('update_transit')}}" method="GET">
+                                <input type="text" name="req_for_transit_update_pk" value="{{j[0]}}" size="4" readonly>
+                                <input type="submit" value="TAG: {{j[5]}} | SRC: {{j[6]}} | DEST: {{j[7]}} | DATE: {{j[2]}} | USER: {{j[1]}}">
+                            </form>
+                        </th></tr>
+                    {% endfor %}
                 </table>                
             </th></tr>
         </table><br>

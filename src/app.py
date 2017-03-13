@@ -163,6 +163,12 @@ def get_transfer_requests_needing_approval_list():
     asset_list = curs.fetchall()
     return asset_list
 
+# Returns list of columns in transfer_requests
+def get_transfer_requests_needing_transit_update_list():
+    curs.execute("select * from transfer_requests where unload_date is null")
+    result = curs.fetchall()
+    return result
+
 # ==== ROUTES ==== #
 
 # Default page, prompts user login / user creation
@@ -205,7 +211,8 @@ def create_user():
 def dashboard():
     if 'username' in session and 'role' in session:
         if session['role'] == "Logistics Officer":
-            return render_template('logistics_dashboard.html', username = session['username'], role = session['role'])
+            job_list = get_transfer_requests_needing_transit_update_list()
+            return render_template('logistics_dashboard.html', username = session['username'], role = session['role'], jobs = job_list)
         else:
             job_list = get_transfer_requests_needing_approval_list()
             return render_template('dashboard.html', username = session['username'], role = session['role'], jobs = job_list)
@@ -354,6 +361,8 @@ def get_specific_request_data(test_req_pk):
 
 def accept_transfer_request(app_user, req_for_app):
     curs.execute("""update transfer_requests set approver='{}' where request_pk='{}'""".format(app_user, req_for_app))
+    app_date = str(datetime.datetime.now().date())
+    curs.execute("""update transfer_requests set approval_date='{}' where request_pk='{}'""".format(app_date, req_for_app))
     connection.commit()
     return;
 
@@ -388,6 +397,51 @@ def approve_req():
             reject_transfer_request(session['req_for_approval_pk'])
             return dashboard()
         return render_template('req_does_not_exist.html')
+
+def update_transit_load(req_pk, upd_year, upd_month, upd_day):
+    upd_date = upd_year + '-' + upd_month + '-' + upd_day 
+    curs.execute("""update transfer_requests set load_date='{}' where request_pk='{}'""".format(upd_date, req_pk))
+    connection.commit()
+    return;
+
+def update_transit_unload(req_pk, upd_year, upd_month, upd_day):
+    upd_date = upd_year + '-' + upd_month + '-' + upd_day
+    curs.execute("""update transfer_requests set unload_date='{}' where request_pk='{}'""".format(upd_date, req_pk))
+    connection.commit() 
+    return;A
+
+def request_not_updated(test_req_pk):
+    curs.execute("""select unload_date from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    unload_date = curs.fetchone()
+    if unload_date != None:
+        return unload_date[0] == None
+    return true
+
+@app.route('/update_transit', methods=(['GET', 'POST']))
+def update_transit():
+    if 'role' in session:
+        if session['role'] != "Logistics Officer":
+            return render_template('invalid_role_for_transit_update.html')
+    if request.method == 'GET':
+        if 'req_for_transit_update_pk' in request.args:
+            req_for_upd = request.args['req_for_transit_update_pk']
+            session['req_for_transit_update_pk'] = req_for_upd
+            if request_exists(req_for_upd):
+                if request_not_updated(req_for_upd):
+                    return render_template('update_transit.html')
+                else:
+                    return render_template('req_already_updated.html')
+            else:
+                return render_template('req_does_not_exist.html')
+        return render_template('req_does_not_exist.html')
+    if request.method == 'POST':
+        if 'upd_load_year' in request.form and 'upd_load_month' in request.form and 'upd_load_day' in request.form:
+            update_transit_load(session['req_for_approval_pk'], request.form['upd_load_year'], request.form['upd_load_month'], request.form['upd_load_day'])
+            return dashboard()
+        if 'upd_unload_year' in request.form and 'upd_unload_month' in request.form and 'upd_unload_day' in request.form:
+            update_transit_unload(session['req_for_approval_pk'], request.form['upd_unload_year'], request.form['upd_unload_month'], request.form['upd_unload_day'])
+            return dashboard()
+        return dashboard()
 
 @app.route('/logistics_set_load_unload', methods=(['GET', 'POST']))
 def logistics_set_load_unload():
