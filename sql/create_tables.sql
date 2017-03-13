@@ -10,19 +10,17 @@ CREATE TABLE users (
 
 /* Assets table with primary key, tag, description, disposed flag, and in transit flag */
 CREATE TABLE assets (
-    asset_pk serial primary key,
     asset_tag varchar(16),
     description varchar(256),
-    is_disposed boolean default false,
-    in_transit boolean default false,
     facility varchar(6),
     acquired date,
-    disposed date
+    disposed date,
+    is_disposed boolean default false,
+    in_transit boolean default false
 );
 
 /* Facilities table with primary key, common name, and facility code */
 CREATE TABLE facilities (
-    facility_pk serial primary key,
     fcode varchar(6),
     common_name varchar(32)
 );

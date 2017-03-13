@@ -20,16 +20,11 @@ fi
 
 # If INPDIR is not empty
 if [ "$(ls -A $INPDIR)" ]; then
-    if [ "$(ls *.csv)" ]; then
-        for filename in $INPDIR/*.csv; do
-            tablename="${filename#*import/}"
-            tablename="${tablename%.*}"
-            ./import_csv.py $DATABASE "$tablename" "$filename"
-        done 
-    else
-        echo "error: no .csv files in input directory"
-        exit;
-    fi
+    for filename in $INPDIR/*.csv; do
+        tablename="${filename#*$INPDIR/}"
+        tablename="${tablename%.*}"
+        ./import_csv.py $DATABASE "$tablename" "$filename"
+    done 
 else
     echo "error: no files in input directory"
     exit;

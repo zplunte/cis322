@@ -9,3 +9,8 @@ import_csv.py
     - Python script takes <dbname> as 1st arg <tablename> as 2nd arg <full_path> 
       as 3rd arg. Imports the present .csv file specified by full_path into the 
       specified database.
+
+      NOTE: I'm having trouble handling NULL's in imported .csv's using the 
+            copy method. Not quite sure how to resolve this an unfortunately 
+            I didn't figure it out in time. Working to resolve this as soon 
+            as possible.
