@@ -4,7 +4,8 @@
 CREATE TABLE userdata (
     username varchar(16),
     password varchar(16),
-    role varchar(256)
+    role varchar(256),
+    active boolean default true
 );
 
 /* Assets table with primary key, tag, description, disposed flag, and in transit flag */
