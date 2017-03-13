@@ -337,13 +337,28 @@ def transfer_req():
         connection.commit()
         return render_template('transfer_req_completed.html')
 
+def request_exists(test_req_pk):
+    curs.execute("""select request_pk from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    return (curs.fetchone() is not None)
+
+def request_not_approved(test_req_pk):
+    curs.execute("""select approver from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    approver = curs.fetchone()
+    if approver != None:
+        return approver[0] == None
+    return true
+
+def get_specific_request_data(test_req_pk):
+    curs.execute("""select * from transfer_requests where request_pk='{}'""".format(test_req_pk))
+    req_list = curs.fetchall()
+    return req_list
+
 @app.route('/approve_req', methods=(['GET', 'POST']))
 def approve_req():
     if 'role' in session:
         if session['role'] != "Facilities Officer":
             return render_template('invalid_role_for_transfer_approval.html')
-    if request.method == 'GET':
-        
+    if request.method == 'GET':        
         return render_template('approve_req.html')
     if request.method == 'POST':
         return render_template('approve_req.html')

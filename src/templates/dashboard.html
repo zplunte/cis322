@@ -61,7 +61,7 @@
                     {% for j in jobs %}
                         <tr><th id="gridcell">
                             <form action="{{url_for('approve_req')}}" method="GET">
-                                <input type="submit" value="TAG: {{j[4]}} | SRC: {{j[5]}} | DEST: {{j[6]}} | DATE: {{j[1]}} | USER: {{j[0]}}">
+                                <input type="submit" value="TAG: {{j[5]}} | SRC: {{j[6]}} | DEST: {{j[7]}} | DATE: {{j[2]}} | USER: {{j[1]}}">
                             </form>
                         </th></tr>
                     {% endfor %}

@@ -33,6 +33,7 @@ CREATE TABLE asset_position (
 
 /* Decided to just have one transfer request table, load/unload date are specified in request form */
 CREATE TABLE transfer_requests (
+    request_pk serial primary key,
     requester varchar(16),
     request_date date,
     approver varchar(16),
