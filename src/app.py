@@ -201,7 +201,7 @@ def create_user():
                 return render_template('user_created.html')
         return render_template('create_user.html')
 
-@app.route('/dashboard', methods=(['GET']))
+@app.route('/dashboard', methods=(['GET', 'POST']))
 def dashboard():
     if 'username' in session and 'role' in session:
         if session['role'] == "Logistics Officer":
@@ -358,10 +358,17 @@ def approve_req():
         if session['role'] != "Facilities Officer":
             return render_template('invalid_role_for_transfer_approval.html')
     if request.method == 'GET':
-        if 'req_for_approval_pk' in request.form:
-            req_for_app = request.form['req_for_approval_pk']
-            return render_template('approve_req.html') 
-        return render_template('approve_req.html')
+        if 'req_for_approval_pk' in request.args:
+            req_for_app = request.args['req_for_approval_pk']
+            if request_exists(req_for_app):
+                if request_not_approved(req_for_app):
+                    specific_req_data = get_specific_request_data(req_for_app)
+                    return render_template('approve_req.html', req_data = specific_req_data)
+                else:
+                    return render_template('req_already_approved.html')
+            else:
+                return render_template('req_does_not_exist.html')
+        return render_template('req_does_not_exist.html')
     if request.method == 'POST':
         return render_template('approve_req.html')
 

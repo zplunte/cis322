@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 'Approve transfer request' page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- 'Approve request' page written by Z.P.L. for OSNAP LOST web application demo -->
 <!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
 <html>
     <head>
@@ -12,8 +12,55 @@
     <body background="{{url_for('static', filename='star_field.png')}}">
         <br>
         <table id="maintable" align="center">
+            <tr><th colspan="2">
+                <h2>==== APPROVE TRANSFER REQUEST ====</h2>
+                <table align="center">
+                    </th><th id="gridhead">
+                        <u>ID</u>
+                    </th><th id="gridhead">
+                        <u>REQUESTER</u>
+                    </th><th id="gridhead">
+                        <u>REQUEST DATE</u>
+                    </th><th id="gridhead">
+                        <u>ASSET TAG</u>
+                    </th><th id="gridhead">
+                        <u>SOURCE</u>
+                    </th><th id="gridhead">
+                        <u>DESTINATION</u>
+                    </th><th id="gridhead">
+                        <u>LOAD DATE</u>
+                    </th><th id="gridhead">
+                        <u>UNLOAD DATE</u>
+                    </th></tr>
+                    {% for d in req_data %}
+                        <tr><th id="gridcell">
+                            {{d[0]}}
+                        </th><th id="gridcell">
+                            {{d[1]}}
+                        </th><th id="gridcell">
+                            {{d[2]}}
+                        </th><th id="gridcell">
+                            {{d[5]}}
+                        </th><th id="gridcell">
+                            {{d[6]}}
+                        </th><th id="gridcell">
+                            {{d[7]}}
+                        </th><th id="gridcell">
+                            {{d[8]}}
+                        </th><th id="gridcell">
+                            {{d[9]}}
+                        </th></tr>
+                    {% endfor %}
+                </table>
+            </th></tr>
             <tr><th>
-                <h2>==== APPROVE TRANSFER REQUESTS ====</h2>
+                <form action="{{url_for('approve_req')}}" method="POST">
+                    <input type="submit" value="Accept">
+                </form>
+            </th><th>
+                <form action="{{url_for('approve_req')}}" method="POST">
+                    <input type="submit" value="Reject">
+                </form>
             </th></tr>
         </table><br>
         <table align="center">

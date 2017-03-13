@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- "Request does not exist" page written by Z.P.L. for OSNAP LOST web application demo -->
+<!-- DANGER: DEMO VERSION! (no encryption or security measures have been used) -->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <title>
+            LOST - Approve Transfer Request
+        </title>
+    </head>
+    <body background="{{url_for('static', filename='star_field.png')}}">
+        <br>
+        <table id="maintable" align="center">
+            <tr><th>
+                <h3 style="color:#990000">* TRANSFER REQUEST DOES NOT EXIST - INVALID ID *</h3>
+            </th></tr>
+        </table><br>
+        <table align="center">
+            <tr><th>
+                <form action="{{url_for('dashboard')}}">
+                    <input type="submit" value="Back">
+                </form>
+            </th><th>
+                <form action="{{url_for('index')}}">
+                    <input type="submit" value="Logout">
+                </form>
+            </th></tr>
+        </table>
+    </body>
+</html>
+
