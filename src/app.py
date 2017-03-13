@@ -268,7 +268,7 @@ def add_asset():
             if asset_exists(a_tag):
                 return render_template('asset_exists.html')
             else:
-                curs.execute("""insert into assets (asset_tag, description) values ('{}', '{}')""".format(a_tag, a_desc))
+                curs.execute("""insert into assets (asset_tag, description, facility) values ('{}', '{}', '{}')""".format(a_tag, a_desc, f_code))
                 connection.commit()
                 curs.execute("""insert into asset_position (arrival_time, a_tag, f_code) values ('{}', '{}', '{}')""".format(arr_date, a_tag, f_code))
                 connection.commit()

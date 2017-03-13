@@ -15,7 +15,7 @@ CREATE TABLE assets (
     description varchar(256),
     is_disposed boolean default false,
     in_transit boolean default false,
-    facility varchar(32),
+    facility varchar(6),
     acquired date,
     disposed date
 );
