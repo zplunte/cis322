@@ -206,9 +206,8 @@ def dashboard():
     if 'username' in session and 'role' in session:
         if session['role'] == "Logistics Officer":
             return render_template('logistics_dashboard.html', username = session['username'], role = session['role'])
-
         else:
-            job_list = get_transfer_requests_needing_approval_list() 
+            job_list = get_transfer_requests_needing_approval_list()
             return render_template('dashboard.html', username = session['username'], role = session['role'], jobs = job_list)
 
 @app.route('/add_facility', methods=(['GET', 'POST']))
@@ -358,7 +357,10 @@ def approve_req():
     if 'role' in session:
         if session['role'] != "Facilities Officer":
             return render_template('invalid_role_for_transfer_approval.html')
-    if request.method == 'GET':        
+    if request.method == 'GET':
+        if 'req_for_approval_pk' in request.form:
+            req_for_app = request.form['req_for_approval_pk']
+            return render_template('approve_req.html') 
         return render_template('approve_req.html')
     if request.method == 'POST':
         return render_template('approve_req.html')
