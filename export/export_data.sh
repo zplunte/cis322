@@ -24,6 +24,17 @@ if [ "$(ls -A $OUTDIR)" ]; then
    rm $OUTDIR/*
 fi
 
+# Make $OUTDIR a full path if not already
+if [[ $OUTDIR != /* ]]; then
+    pref=$(pwd)
+    OUTDIR="$pref/$OUTDIR"
+fi
+
+# Remove any single trailing / from $OUTDIR
+if [[ $OUTDIR == */ ]]; then
+    OUTDIR=${OUTDIR%?}
+fi
+
 # Export user data to $OUTDIR/users.csv using python script
 ./export_users.py $DATABASE $OUTDIR
 

@@ -19,17 +19,17 @@
                 <form action="{{url_for('transfer_req')}}" method="POST">
                     Asset: <select name="transfer_asset_tag">
                         {% for a in assets %}
-                            <option value="{{a[1]}}">{{a[2]}}</option>
+                            <option value="{{a[0]}}">{{a[1]}}</option>
                         {% endfor %}
                     </select><br><br> 
                     Source Facility: <select name="transfer_src_facility_code">
                         {% for f in facilities %}
-                            <option value="{{f[1]}}">{{f[2]}}</option>
+                            <option value="{{f[0]}}">{{f[1]}}</option>
                         {% endfor %}
                     </select><br><br>
                     Destination Facility: <select name="transfer_dest_facility_code">
                         {% for f in facilities %}
-                            <option value="{{f[1]}}">{{f[2]}}</option>
+                            <option value="{{f[0]}}">{{f[1]}}</option>
                         {% endfor %}
                     </select><br><br>
                     <input type="submit" value="Submit">

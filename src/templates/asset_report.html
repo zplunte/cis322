@@ -77,7 +77,7 @@
                     Facility: <select name="report_facility_code">
                         <option value="ALL_FACILITIES">(all facilities)</option>
                         {% for f in facilities %}
-                            <option value="{{f[1]}}">{{f[2]}}</option>
+                            <option value="{{f[0]}}">{{f[1]}}</option>
                         {% endfor %}
                     </select>
                     <input type="submit" value="Submit">
