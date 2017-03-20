@@ -32,12 +32,12 @@ if __name__ == '__main__':
         acquired = split_line[3]
         disposed = split_line[4]
 
-        if acquired == "NULL":
+        if acquired == "NULL" or acquired == "NULL\n":
 
             # Insert row into assets table without acquired or disposed inserts
             curs.execute("insert into assets (asset_tag, description, facility) values ('{}', '{}', '{}')".format(asset_tag, description, facility))
 
-        elif disposed == "NULL":
+        elif disposed == "NULL" or disposed == "NULL\n":
 
             # Insert row into assets table with acquired but without disposed insert
             curs.execute("insert into assets (asset_tag, description, facility, acquired) values ('{}', '{}', '{}', '{}')".format(asset_tag, description, facility, acquired))

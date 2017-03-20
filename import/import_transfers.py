@@ -36,17 +36,17 @@ if __name__ == '__main__':
         load_dt = split_line[7]
         unload_dt = split_line[8]
 
-        if approve_by == "NULL" and load_dt == "NULL" and unload_dt == "NULL":
+        if approve_by == "NULL" and load_dt == "NULL" and (unload_dt == "NULL" or unload_dt == "NULL\n"):
             
             # Insert row into transfers table without approve_by, approve_dt, load_dt, unload_dt
             curs.execute("insert into transfers (request_by, request_dt, asset_tag, source, destination) values ('{}', '{}', '{}', '{}', '{}')".format(request_by, request_dt, asset_tag, source, destination))
 
-        elif load_dt == "NULL" and unload_dt == "NULL":
+        elif load_dt == "NULL" and (unload_dt == "NULL" or unload_dt == "NULL\n"):
 
             # Insert row into transfers table with approve_by and approve_dt, but without load_dt, unload_dt
             curs.execute("insert into transfers (request_by, request_dt, approve_by, approve_dt, asset_tag, source, destination) values ('{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(request_by, request_dt, approve_by, approve_dt, asset_tag, source, destination))
 
-        elif unload_dt == "NULL":
+        elif (unload_dt == "NULL" or unload_dt == "NULL\n"):
 
             # Insert row into transfers table with approve_by and approve_dt and load_dt, but without unload_dt
             curs.execute("insert into transfers (request_by, request_dt, approve_by, approve_dt, asset_tag, source, destination, load_dt) values ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(request_by, request_dt, approve_by, approve_dt, asset_tag, source, destination, load_dt))

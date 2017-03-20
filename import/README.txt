@@ -31,3 +31,9 @@ import_transfers.py
       Assumes <filename> is the full path to transfers.csv file, and that the 
       transfers.csv file is properly formatted. Imports the data in the .csv file
       to the specified database.
+
+test_import.sh
+
+    - Bash script that takes <dbname> as 1st arg. Attempts to import sample LOST
+      data .csv files downloaded using curl into the specified database. Utilizes 
+      import_data.sh with <dbname> and the directory downloaded with curl as args.
