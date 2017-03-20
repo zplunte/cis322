@@ -190,22 +190,22 @@ def index():
         return render_template('invalid_login.html')
     return render_template('invalid_login.html')
 
-@app.route('/create_user', methods=(['POST', 'GET']))
-def create_user():
-    if request.method == 'GET':
-        return render_template('create_user.html')
-    if request.method == 'POST':
-        if 'username' in request.form and 'password' in request.form and 'role' in request.form:
-            uname = request.form['username']
-            if user_exists(uname):
-                return render_template('user_exists.html')
-            else:
-                urole = request.form['role']
-                upass = request.form['password']
-                curs.execute("""insert into users (username, password, role) values ('{}', '{}', '{}')""".format(uname, upass, urole))
-                connection.commit()
-                return render_template('user_created.html')
-        return render_template('create_user.html')
+# @app.route('/create_user', methods=(['POST', 'GET']))
+# def create_user():
+#     if request.method == 'GET':
+#         return render_template('create_user.html')
+#     if request.method == 'POST':
+#         if 'username' in request.form and 'password' in request.form and 'role' in request.form:
+#             uname = request.form['username']
+#             if user_exists(uname):
+#                 return render_template('user_exists.html')
+#             else:
+#                 urole = request.form['role']
+#                 upass = request.form['password']
+#                 curs.execute("""insert into users (username, password, role) values ('{}', '{}', '{}')""".format(uname, upass, urole))
+#                 connection.commit()
+#                 return render_template('user_created.html')
+#         return render_template('create_user.html')
 
 @app.route('/dashboard', methods=(['GET', 'POST']))
 def dashboard():
@@ -450,6 +450,64 @@ def logistics_set_load_unload():
     if request.method == 'POST':
         return render_template('logistics_set_load_unload.html')
 
+# Assignment 10 Note: I decided to use one route for both add user and revoke user.
+# The method looks for incoming username and password and role, if it finds all 3 
+# it assumes we are creating a new user. If the user exists then the data is updated.
+# If there is only an incoming username and no password or role, then we assume we 
+# are revoking user permissions, and to do that we just delete all the user data 
+# associated with that account in the database table users
+
+@app.route('/edit_users', methods=(['POST']))
+def edit_users():
+
+    if request.method == 'POST':
+
+        data = json.loads(request.form['args'])
+
+        # If username, password, and role all in request, then create user
+        if 'username' in data and 'password' in data and 'role' in data:
+            uname = data['username']
+            urole = data['role']
+            upass = data['password']
+
+            # If user already exists, just update user data
+            if user_exists(uname):
+                if urole == 'logofc':
+                    curs.execute("""update users set role='Logistics Officer' where username='{}'""".format(uname))
+                elif urole == 'facofc':
+                    curs.execute("""update users set role='Facilities Officer' where username='{}'""".format(uname))
+                else:
+                    curs.execute("""update users set role='Logistics Officer' where username='{}'""".format(uname))
+
+                curs.execute("""update users set password='{}' where username='{}'""".format(upass, uname))
+                curs.execute("""update users set active=true where username='{}'""".format(uname)) 
+                connection.commit()
+                return
+
+            # Otherwise, create new user
+            else:
+                if urole == 'logofc':
+                    curs.execute("""insert into users (username, password, role, active) values ('{}', '{}', 'Logistics Officer', true)""".format(uname, upass))
+
+                elif urole == 'facofc':
+                    curs.execute("""insert into users (username, password, role, active) values ('{}', '{}', 'Facilities Officer', true)""".format(uname, upass))
+
+                else:
+                    curs.execute("""insert into users (username, password, role, active) values ('{}', '{}', 'Logistics Officer', true)""".format(uname, upass))
+
+                connection.commit()
+                return
+
+        # If just receiving a username, revoke that user by deleting associated user data from users
+        elif 'username' in data:
+            uname = data['username']
+            if user_exists(uname):
+                curs.execute("""delete from users where username='{}'""".format(uname))
+                connection.commit()
+                return
+            return
+        return
+        
 # ==== RUN APP ==== #
 
 if __name__ == "__main__":
