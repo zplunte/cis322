@@ -18,7 +18,8 @@ if __name__ == '__main__':
     data['username'] = args.username
 
     json_data = dict()
-    json_data['args'] = json.dumps(data)
+    json_data['arguments'] = json.dumps(data)
+    json_data['signature'] = ''
     send_data = urlencode(json_data)
     
     post_request = Request(losturl, send_data.encode('ascii'), method='POST')

@@ -462,7 +462,7 @@ def edit_users():
 
     if request.method == 'POST':
 
-        data = json.loads(request.form['args'])
+        data = json.loads(request.form['arguments'])
 
         # If username, password, and role all in request, then create user
         if 'username' in data and 'password' in data and 'role' in data:
