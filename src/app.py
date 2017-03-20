@@ -450,6 +450,68 @@ def logistics_set_load_unload():
     if request.method == 'POST':
         return render_template('logistics_set_load_unload.html')
 
+# Assignment 10 Note: I decided to use one route for both add user and revoke user.
+# The method looks for incoming username and password and role, if it finds all 3 
+# if assumes we are creating a new user. If the user exists then the data is updated.
+# If there is only an incoming username and no password or role, then we assume we 
+# are revoking user permissions, and to do that we just delete all the user data 
+# associated with that account in the database table users
+
+# Additional Note: I did not seem to get the clients working properly in time. Not 
+# quite sure what I did wrong. Might be here, might be on the client side. For now 
+# I left all the old create_user functionality so the app would still work.
+
+@app.route('/edit_users', methods=(['POST']))
+def edit_users():
+
+    data = json.loads(request.form['arguments'])
+
+    if request.method == 'POST':
+
+        # If username, password, and role all in request, then create user
+        if 'username' in data and 'password' in data and 'role' in data:
+            uname = data['username']
+            urole = data['role']
+            upass = data['password']
+
+            # If user already exists, just update user data
+            if user_exists(uname):
+                if urole == 'logofc':
+                    curs.execute("""update users set role='Logistics Officer' where username='{}'""".format(uname))
+                elif urole == 'facofc':
+                    curs.execute("""update users set role='Facilities Officer' where username='{}'""".format(uname))
+                else:
+                    curs.execute("""update users set role='Logistics Officer' where username='{}'""".format(uname))
+
+                curs.execute("""update users set password='{}' where username='{}'""".format(upass, uname))
+                curs.execute("""update users set active=true where username='{}'""".format(uname)) 
+                connection.commit()
+                return
+
+            # Otherwise, create new user
+            else:
+                if urole == 'logofc':
+                    curs.execute("""insert into users (username, password, role, active) values ('{}', '{}', 'Logistics Officer', true)""".format(uname, upass))
+
+                elif urole == 'facofc':
+                    curs.execute("""insert into users (username, password, role, active) values ('{}', '{}', 'Facilities Officer', true)""".format(uname, upass))
+
+                else:
+                    curs.execute("""insert into users (username, password, role, active) values ('{}', '{}', 'Logistics Officer', true)""".format(uname, upass))
+
+                connection.commit()
+                return
+
+        # If just receiving a username, revoke that user by deleting associated user data from users
+        elif 'username' in data:
+            uname = data['username']
+            if user_exists(uname):
+                curs.execute("""delete from users where username='{}'""".format(uname))
+                connection.commit()
+                return
+            return
+        return
+
 # ==== RUN APP ==== #
 
 if __name__ == "__main__":
